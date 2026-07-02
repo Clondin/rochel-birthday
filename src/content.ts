@@ -135,6 +135,21 @@ export const kids = {
   ],
 }
 
+/* Vouchers. Claims persist in her browser so they actually count. */
+export const coupons = {
+  label: 'Redeemable',
+  headline: 'The vouchers.',
+  sub: 'All valid forever. Claim wisely.',
+  items: [
+    { title: 'One sleep-in Saturday', detail: 'Kids handled. Coffee delivered.' },
+    { title: 'One dinner out', detail: 'No phones. I already know the place.' },
+    { title: 'One weekend away', detail: 'Planned start to finish, by me.' },
+    { title: 'A no-questions yes', detail: 'One request, granted. Anything.' },
+    { title: 'One movie night', detail: 'Your pick. I will not comment.' },
+    { title: 'Breakfast in bed', detail: 'The good kind. Not cereal.' },
+  ],
+}
+
 export const finale = {
   lead: 'One more thing.',
   buttonLabel: 'Make a wish',

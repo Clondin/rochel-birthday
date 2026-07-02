@@ -9,6 +9,7 @@ import { Gallery } from './components/gallery'
 import { Interlude } from './components/interlude'
 import { Reasons } from './components/reasons'
 import { Kids } from './components/kids'
+import { Envelopes } from './components/envelopes'
 import { Finale } from './components/finale'
 
 /* Film grain: fixed, non-scrolling, pointer-events-none. */
@@ -43,6 +44,7 @@ export default function App() {
       <Interlude />
       <Reasons />
       <Kids />
+      <Envelopes />
       <Finale />
 
       <footer className="flex items-center justify-center gap-2.5 pb-10 text-xs tracking-[0.25em] text-ivory-500 uppercase">

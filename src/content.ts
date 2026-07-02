@@ -74,7 +74,42 @@ export const reasons = [
     phrase: 'You raised the bar. I am still climbing.',
     src: 'https://picsum.photos/seed/rochel-standard/640/800',
   },
+  {
+    title: 'The patience',
+    phrase: 'Mostly with me. Renewed daily.',
+    src: 'https://picsum.photos/seed/rochel-patience/640/800',
+  },
+  {
+    title: 'The plans',
+    phrase: 'Watching them work is half the fun.',
+    src: 'https://picsum.photos/seed/rochel-plans/640/800',
+  },
 ]
+
+/* Sealed notes for later. Edit titles and bodies freely. */
+export const openWhen = {
+  label: 'For later',
+  headline: 'Open when.',
+  sub: 'Four notes, sealed until needed.',
+  notes: [
+    {
+      title: 'you need a laugh',
+      body: 'Think of the worst hotel we ever stayed in, and how hard you laughed anyway. I would book it again tomorrow.',
+    },
+    {
+      title: 'it’s a hard day',
+      body: 'Whatever it is, we have had worse and fixed it. Team meeting tonight on the couch. Attendance: two.',
+    },
+    {
+      title: 'the kids are too much',
+      body: 'They get it from you: the volume, the stubbornness, the charm. Two of those three are compliments. You pick which.',
+    },
+    {
+      title: 'you miss me',
+      body: 'I am probably already on the way home. Check the driveway, then call me anyway.',
+    },
+  ],
+}
 
 /* The fan club: one card per kid. Swap names, lines, and photos. */
 export const kids = {

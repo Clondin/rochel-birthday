@@ -1,6 +1,8 @@
 # For Rochel
 
-A birthday page. Dark plum, wine accent, serif type, big effects: kinetic name reveal, cursor parallax, marquee bands, a horizontal-scroll photo gallery, a cursor-trailing photo list, tilted kid cards, and a confetti finale.
+A birthday page. Dark plum, wine accent, serif type, big effects: an intro curtain, Lenis smooth scrolling, a kinetic name reveal inside a spinning type ring, cursor and scroll parallax, velocity-reactive marquee bands, a word-by-word scroll-lit letter, a pinned horizontal photo gallery with inner parallax, a full-screen quote interlude with a live day counter, a cursor-trailing reasons list, draggable kid cards, sealed "open when" notes that morph into letters, and a heart-confetti finale.
+
+Note: `metDate` in `src/content.ts` drives the "Day N of us" counter. Set it to the real date.
 
 ## Make it hers
 

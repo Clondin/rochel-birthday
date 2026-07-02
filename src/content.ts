@@ -38,7 +38,18 @@ export const archive = {
     { src: 'https://picsum.photos/seed/rochel-c/1100/800', caption: 'An ordinary day. A favorite one.' },
     { src: 'https://picsum.photos/seed/rochel-d/800/1100', caption: 'Somewhere far from home' },
     { src: 'https://picsum.photos/seed/rochel-e/1100/800', caption: 'The most recent favorite' },
+    { src: 'https://picsum.photos/seed/rochel-f/800/1100', caption: 'Proof I occasionally plan a good surprise' },
+    { src: 'https://picsum.photos/seed/rochel-g/1100/800', caption: 'Home, on a good night' },
   ],
+}
+
+/* Full-screen interlude between the gallery and the list.
+   IMPORTANT: set metDate to the day you two met (YYYY-MM-DD),
+   the day counter is computed from it. */
+export const interlude = {
+  quote: 'Every good thing here has you in it.',
+  src: 'https://picsum.photos/seed/rochel-interlude/1600/1000',
+  metDate: '2016-03-15',
 }
 
 /* The list. Hover each row on desktop for the photo. */

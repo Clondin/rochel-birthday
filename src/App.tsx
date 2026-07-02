@@ -1,8 +1,12 @@
+import { HeartStraight } from '@phosphor-icons/react'
 import { her } from './content'
+import { Intro } from './components/intro'
+import { SmoothScroll } from './components/smooth-scroll'
 import { Hero } from './components/hero'
 import { Marquee } from './components/marquee'
 import { Letter } from './components/letter'
 import { Gallery } from './components/gallery'
+import { Interlude } from './components/interlude'
 import { Reasons } from './components/reasons'
 import { Kids } from './components/kids'
 import { Finale } from './components/finale'
@@ -14,22 +18,36 @@ const GRAIN =
 export default function App() {
   return (
     <main className="relative">
+      <SmoothScroll />
+      <Intro />
+
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-50 opacity-[0.05] mix-blend-overlay"
         style={{ backgroundImage: `url('${GRAIN}')` }}
+      />
+      {/* soft vignette pulls the eye to center */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-40"
+        style={{
+          background:
+            'radial-gradient(ellipse 130% 100% at 50% 45%, transparent 62%, rgb(10 7 9 / 0.5) 100%)',
+        }}
       />
 
       <Hero />
       <Marquee />
       <Letter />
       <Gallery />
+      <Interlude />
       <Reasons />
       <Kids />
       <Finale />
 
-      <footer className="flex items-center justify-center pb-10 text-xs tracking-[0.25em] text-ivory-500 uppercase">
+      <footer className="flex items-center justify-center gap-2.5 pb-10 text-xs tracking-[0.25em] text-ivory-500 uppercase">
         Made by {her.from}, for {her.name}
+        <HeartStraight size={14} weight="fill" className="heartbeat text-wine-400" />
       </footer>
     </main>
   )

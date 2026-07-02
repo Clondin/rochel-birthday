@@ -17,10 +17,6 @@
   --color-wine-600: #8e3a4a;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background: var(--color-ink-950);
   color: var(--color-ivory-50);
@@ -32,6 +28,100 @@ body {
 ::selection {
   background: var(--color-wine-400);
   color: var(--color-ink-950);
+}
+
+/* Candle dust drifting upward. Pure transform/opacity. */
+@keyframes dust-rise {
+  0% {
+    transform: translateY(10vh) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: var(--dust-opacity, 0.2);
+  }
+  85% {
+    opacity: var(--dust-opacity, 0.2);
+  }
+  100% {
+    transform: translateY(-105vh) translateX(var(--dust-sway, 3vw));
+    opacity: 0;
+  }
+}
+
+.dust {
+  animation: dust-rise var(--dust-duration, 14s) linear infinite;
+  animation-delay: var(--dust-delay, 0s);
+}
+
+/* Fraunces at its warmest: soft terminals, wonky letterforms */
+.font-wonk {
+  font-variation-settings:
+    'SOFT' 75,
+    'WONK' 1;
+}
+
+/* Slow drift on the hero portrait */
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.07);
+  }
+}
+
+.ken-burns {
+  animation: ken-burns 18s ease-in-out infinite alternate;
+}
+
+/* Footer heartbeat */
+@keyframes heartbeat {
+  0%,
+  48%,
+  100% {
+    transform: scale(1);
+  }
+  12% {
+    transform: scale(1.2);
+  }
+  24% {
+    transform: scale(1);
+  }
+  36% {
+    transform: scale(1.12);
+  }
+}
+
+.heartbeat {
+  animation: heartbeat 1.9s ease-in-out infinite;
+}
+
+/* Slow-spinning text ring in the hero */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow svg {
+  animation: spin-slow 55s linear infinite;
+}
+
+/* Breathing glow behind the wish button */
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.12);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 3.2s ease-in-out infinite;
 }
 
 /* Infinite marquee: track holds two copies of its content, slides one copy's width */
@@ -50,10 +140,17 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   .marquee-track {
+    animation: none;
+  }
+  .dust {
+    animation: none;
+    opacity: 0;
+  }
+  .spin-slow svg,
+  .glow-pulse,
+  .ken-burns,
+  .heartbeat {
     animation: none;
   }
 }

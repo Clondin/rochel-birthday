@@ -1,3 +1,4 @@
+import { motion, useReducedMotion, useScroll, useSpring, useTransform, useVelocity } from 'motion/react'
 import { her } from '../content'
 
 const PHRASES = ['Happy birthday', her.name, 'Happy birthday', her.name]
@@ -35,10 +36,21 @@ function Band({ reverse = false, italic = false }: { reverse?: boolean; italic?:
 }
 
 export function Marquee() {
+  const reduce = useReducedMotion()
+
+  /* The bands shear with scroll velocity, then spring back straight. */
+  const { scrollY } = useScroll()
+  const skewX = useSpring(useTransform(useVelocity(scrollY), [-1600, 1600], [7, -7]), {
+    stiffness: 160,
+    damping: 24,
+  })
+
   return (
     <section className="py-10 md:py-16">
-      <Band />
-      <Band reverse italic />
+      <motion.div style={reduce ? undefined : { skewX }}>
+        <Band />
+        <Band reverse italic />
+      </motion.div>
     </section>
   )
 }

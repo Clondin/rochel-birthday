@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Fraunces Variable', Georgia, serif;
+  --font-serif: 'Fraunces Variable', Georgia, serif;
+  --font-body: 'Outfit Variable', system-ui, sans-serif;
+
+  /* Date-night palette: plum-tinted night, warm ivory, one wine accent */
+  --color-ink-950: #171114;
+  --color-ink-900: #201820;
+  --color-ink-800: #2c2129;
+  --color-ivory-50: #f4ede7;
+  --color-ivory-300: #d5cac2;
+  --color-ivory-500: #9c8f88;
+  --color-wine-300: #d98a97;
+  --color-wine-400: #c25e6e;
+  --color-wine-600: #8e3a4a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-ivory-50);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-wine-400);
+  color: var(--color-ink-950);
+}
+
+/* Infinite marquee: track holds two copies of its content, slides one copy's width */
+@keyframes marquee-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-slide var(--marquee-duration, 30s) linear infinite;
+}
+
+.marquee-reverse {
+  animation-direction: reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}

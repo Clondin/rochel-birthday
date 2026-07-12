@@ -10,7 +10,7 @@ function Band({ reverse = false, italic = false }: { reverse?: boolean; italic?:
       {PHRASES.map((phrase, i) => (
         <span key={i} className="flex shrink-0 items-center">
           <span
-            className={`font-display px-8 text-5xl font-light tracking-tight whitespace-nowrap md:px-12 md:text-7xl ${
+            className={`font-display px-8 text-5xl font-light tracking-tight whitespace-nowrap md:px-14 md:text-8xl ${
               italic ? 'pb-2 text-ivory-500 italic' : 'text-ivory-50'
             }`}
           >

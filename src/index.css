@@ -4,17 +4,21 @@
   --font-display: 'Fraunces Variable', Georgia, serif;
   --font-serif: 'Fraunces Variable', Georgia, serif;
   --font-body: 'Outfit Variable', system-ui, sans-serif;
+  --font-hand: 'Caveat Variable', cursive;
 
-  /* Date-night palette: plum-tinted night, warm ivory, one wine accent */
-  --color-ink-950: #171114;
-  --color-ink-900: #201820;
-  --color-ink-800: #2c2129;
-  --color-ivory-50: #f4ede7;
-  --color-ivory-300: #d5cac2;
-  --color-ivory-500: #9c8f88;
-  --color-wine-300: #d98a97;
-  --color-wine-400: #c25e6e;
-  --color-wine-600: #8e3a4a;
+  /* Flash-paper palette: warm paper, near-black ink, one hot coral accent.
+     NOTE on legacy names: ink-* is now the light PAPER scale (950 = page),
+     ivory-* is now the dark TEXT scale (50 = primary ink). */
+  --color-ink-950: #f7f1e8;
+  --color-ink-900: #e9e0d4;
+  --color-ink-800: #d7c9ba;
+  --color-ivory-50: #211b1a;
+  --color-ivory-300: #4d4240;
+  --color-ivory-500: #776967;
+  --color-wine-300: #e3452b;
+  --color-wine-400: #ef4b2f;
+  --color-wine-600: #c93620;
+  --color-rose-300: #ef4b2f;
 }
 
 body {
@@ -28,6 +32,37 @@ body {
 ::selection {
   background: var(--color-wine-400);
   color: var(--color-ink-950);
+}
+
+/* Scrollbar in the page's palette */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-ink-950);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-800);
+  border: 2px solid var(--color-ink-950);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-wine-600);
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-800) var(--color-ink-950);
+}
+
+/* Keyboard focus in the accent */
+:focus-visible {
+  outline: 2px solid var(--color-wine-400);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 /* Candle dust drifting upward. Pure transform/opacity. */
@@ -60,6 +95,45 @@ body {
     'WONK' 1;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.party-orbit {
+  animation: orbit 24s linear infinite;
+}
+
+.party-orbit::before,
+.party-orbit::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--color-wine-400);
+}
+
+.party-orbit::before {
+  left: 8%;
+  top: 18%;
+}
+
+.party-orbit::after {
+  bottom: 12%;
+  right: 20%;
+}
+
+.party-orbit-reverse {
+  animation-direction: reverse;
+  animation-duration: 31s;
+}
+
 /* Slow drift on the hero portrait */
 @keyframes ken-burns {
   from {
@@ -74,26 +148,31 @@ body {
   animation: ken-burns 18s ease-in-out infinite alternate;
 }
 
-/* Footer heartbeat */
-@keyframes heartbeat {
-  0%,
-  48%,
-  100% {
-    transform: scale(1);
+/* Type filled with a photo, drifting slowly inside the letters */
+@keyframes fill-pan {
+  from {
+    background-position:
+      0 0,
+      42% 28%;
   }
-  12% {
-    transform: scale(1.2);
-  }
-  24% {
-    transform: scale(1);
-  }
-  36% {
-    transform: scale(1.12);
+  to {
+    background-position:
+      0 0,
+      58% 45%;
   }
 }
 
-.heartbeat {
-  animation: heartbeat 1.9s ease-in-out infinite;
+.text-photo-fill {
+  background-size:
+    cover,
+    170% auto;
+  background-position:
+    0 0,
+    50% 35%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: fill-pan 9s ease-in-out infinite alternate;
 }
 
 /* Slow-spinning text ring in the hero */
@@ -150,7 +229,8 @@ body {
   .spin-slow svg,
   .glow-pulse,
   .ken-burns,
-  .heartbeat {
+  .text-photo-fill,
+  .party-orbit {
     animation: none;
   }
 }

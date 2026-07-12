@@ -6,57 +6,13 @@ import {
   useReducedMotion,
   useSpring,
 } from 'motion/react'
-import confetti from 'canvas-confetti'
 import { finale, her } from '../content'
+import { celebrate, spark } from '../effects'
 import { Dust } from './dust'
+import { FadeImg } from './fade-img'
 import { LineReveal } from './line-reveal'
 
 const EASE = [0.16, 1, 0.3, 1] as const
-const CONFETTI_COLORS = ['#c25e6e', '#d98a97', '#8e3a4a', '#f4ede7']
-const defaults = { colors: CONFETTI_COLORS, disableForReducedMotion: true }
-
-let heartShape: confetti.Shape | null = null
-try {
-  heartShape = confetti.shapeFromText({ text: '❤️', scalar: 2 })
-} catch {
-  heartShape = null
-}
-
-/* The full volley: big center burst, hearts, side cannons, then streamers. */
-function celebrate() {
-  confetti({ ...defaults, particleCount: 150, spread: 100, origin: { y: 0.7 } })
-  if (heartShape) {
-    confetti({
-      ...defaults,
-      particleCount: 22,
-      spread: 110,
-      scalar: 1.7,
-      startVelocity: 38,
-      shapes: [heartShape],
-      origin: { y: 0.65 },
-    })
-  }
-  setTimeout(() => {
-    confetti({ ...defaults, particleCount: 70, angle: 60, spread: 70, origin: { x: 0, y: 0.75 } })
-    confetti({ ...defaults, particleCount: 70, angle: 120, spread: 70, origin: { x: 1, y: 0.75 } })
-  }, 220)
-  const end = performance.now() + 1300
-  ;(function streamers() {
-    confetti({ ...defaults, particleCount: 4, angle: 62, spread: 50, startVelocity: 58, origin: { x: 0, y: 0.85 } })
-    confetti({ ...defaults, particleCount: 4, angle: 118, spread: 50, startVelocity: 58, origin: { x: 1, y: 0.85 } })
-    if (performance.now() < end) requestAnimationFrame(streamers)
-  })()
-}
-
-function spark(clientX: number, clientY: number) {
-  confetti({
-    ...defaults,
-    particleCount: 26,
-    spread: 65,
-    startVelocity: 32,
-    origin: { x: clientX / window.innerWidth, y: clientY / window.innerHeight },
-  })
-}
 
 /* Button that leans toward the cursor. */
 function Magnetic({ children }: { children: React.ReactNode }) {
@@ -97,12 +53,23 @@ export function Finale() {
       }}
       className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 text-center"
     >
+      {/* ambient backdrop, same treatment as the hero */}
+      <div aria-hidden className="absolute inset-0">
+        <FadeImg
+          src={finale.bgSrc}
+          alt=""
+          loading="lazy"
+          loadedClass="opacity-80"
+          className="h-full w-full scale-105 object-cover blur-[1px]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink-950/35 via-ink-950/10 to-ink-950/55" />
+      </div>
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse 55% 40% at 50% 60%, rgb(194 94 110 / 0.12), transparent 70%)',
+            'radial-gradient(ellipse 55% 40% at 50% 60%, rgb(239 75 47 / 0.14), transparent 70%)',
         }}
       />
       <Dust count={12} />
@@ -114,7 +81,7 @@ export function Finale() {
             exit={{ opacity: 0, y: -20, transition: { duration: 0.3 } }}
             className="relative flex flex-col items-center"
           >
-            <h2 className="font-display text-6xl leading-[1.05] font-light tracking-tight italic md:text-9xl">
+            <h2 className="max-w-5xl text-5xl font-black uppercase leading-[0.9] tracking-[-0.055em] text-ivory-50 drop-shadow-[0_2px_16px_rgb(247_241_232/0.9)] sm:text-6xl md:text-8xl">
               <LineReveal>{finale.lead}</LineReveal>
             </h2>
             <motion.div
@@ -127,14 +94,14 @@ export function Finale() {
                 <div className="relative mt-14 inline-block">
                   <span
                     aria-hidden
-                    className="glow-pulse absolute -inset-2 rounded-full bg-wine-400/35 blur-xl"
+                    className="glow-pulse absolute -inset-2 rounded-full bg-wine-400/25 blur-xl"
                   />
                   <button
                     onClick={() => {
                       setWished(true)
                       celebrate()
                     }}
-                    className="relative rounded-full bg-wine-400 px-12 py-5 text-lg font-medium tracking-wide text-ink-950 transition-colors duration-200 hover:bg-wine-300 active:scale-[0.98]"
+                    className="relative rounded-full bg-wine-400 px-12 py-5 text-lg font-medium tracking-wide text-ivory-50 transition-colors duration-200 hover:bg-wine-300 active:scale-[0.98]"
                   >
                     {finale.buttonLabel}
                   </button>
@@ -150,14 +117,18 @@ export function Finale() {
             transition={{ type: 'spring', stiffness: 80, damping: 15, delay: 0.1 }}
             className="relative flex flex-col items-center"
           >
-            <h2 className="font-display text-4xl leading-[1.05] font-light tracking-tight text-ivory-300 md:text-6xl">
+            <h2 className="font-display text-4xl leading-[1.05] font-semibold tracking-tight text-ivory-50 drop-shadow-[0_2px_12px_rgb(247_241_232/0.95)] md:text-6xl">
               {finale.headline}
             </h2>
-            <p className="font-display font-wonk pb-4 text-[clamp(4.5rem,15vw,12rem)] leading-[1.1] font-light text-wine-300 italic">
+            <p
+              className="font-display font-wonk text-photo-fill pb-4 text-[clamp(4.5rem,15vw,12rem)] leading-[1.1] font-light italic [filter:drop-shadow(0_2px_10px_rgb(247_241_232/0.85))]"
+              style={{
+                backgroundImage: `linear-gradient(rgb(217 138 151 / 0.4), rgb(217 138 151 / 0.4)), url('${finale.nameFillSrc}')`,
+              }}
+            >
               {her.name}
             </p>
-            <p className="mt-4 text-xl text-ivory-300">{finale.sub}</p>
-            <p className="mt-3 text-sm text-ivory-500">Tap anywhere for more.</p>
+            <p className="mt-4 text-xl font-semibold text-ivory-50 drop-shadow-[0_2px_10px_rgb(247_241_232/0.95)]">{finale.sub}</p>
             <button
               onClick={celebrate}
               className="mt-10 rounded-full border border-ivory-50/20 px-8 py-3 text-sm font-medium tracking-[0.2em] text-ivory-300 uppercase transition-all duration-200 hover:border-wine-400/60 hover:text-ivory-50 active:scale-[0.98]"

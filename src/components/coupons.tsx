@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
-import confetti from 'canvas-confetti'
 import { coupons } from '../content'
+import { spark } from '../effects'
 import { LineReveal } from './line-reveal'
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -22,6 +22,22 @@ function loadClaims(): number[] {
 export function Coupons() {
   const reduce = useReducedMotion()
   const [claimed, setClaimed] = useState<number[]>(loadClaims)
+  const strip = useRef<HTMLDivElement>(null)
+  const [dragW, setDragW] = useState(0)
+  const [finePointer] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches,
+  )
+
+  /* how far the strip can be dragged left on desktop */
+  useEffect(() => {
+    const el = strip.current
+    if (!el) return
+    const measure = () =>
+      setDragW(Math.max(0, el.scrollWidth - (el.parentElement?.clientWidth ?? window.innerWidth)))
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
 
   function claim(i: number, e: React.MouseEvent) {
     if (claimed.includes(i)) return
@@ -32,14 +48,7 @@ export function Coupons() {
     } catch {
       /* private mode, claims just won't persist */
     }
-    confetti({
-      colors: ['#c25e6e', '#d98a97', '#f4ede7'],
-      disableForReducedMotion: true,
-      particleCount: 24,
-      spread: 60,
-      startVelocity: 28,
-      origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight },
-    })
+    spark(e.clientX, e.clientY, 24)
   }
 
   return (
@@ -48,14 +57,21 @@ export function Coupons() {
         <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-300 uppercase">{coupons.label}</p>
         <h2 className="font-display mt-6 max-w-3xl text-5xl leading-[1.05] font-light tracking-tight md:text-7xl">
           <LineReveal>
-            The <span className="text-wine-300 italic">vouchers.</span>
+            No <span className="text-wine-300 italic">expiration dates.</span>
           </LineReveal>
         </h2>
         <p className="mt-5 text-ivory-500">{coupons.sub}</p>
       </div>
 
-      <div className="mt-14 flex snap-x gap-6 overflow-x-auto px-6 pb-6 md:mt-20 md:px-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]">
-        {coupons.items.map((coupon, i) => {
+      <div className="mt-14 snap-x overflow-x-auto pb-6 md:mt-20 md:snap-none md:overflow-hidden">
+        <motion.div
+          ref={strip}
+          drag={finePointer && !reduce ? 'x' : false}
+          dragConstraints={{ left: -dragW, right: 0 }}
+          dragElastic={0.08}
+          className="flex w-max gap-6 px-6 md:cursor-grab md:px-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] md:active:cursor-grabbing"
+        >
+          {coupons.items.map((coupon, i) => {
           const isClaimed = claimed.includes(i)
           return (
             <motion.button
@@ -67,12 +83,14 @@ export function Coupons() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.7, delay: i * 0.06, ease: EASE }}
               aria-pressed={isClaimed}
-              className={`relative flex h-56 w-72 shrink-0 snap-center flex-col justify-between rounded-2xl border border-dashed p-7 text-left transition-colors duration-300 ${
+              className={`relative flex h-64 w-72 shrink-0 snap-center flex-col justify-between overflow-hidden rounded-2xl border border-dashed border-t-4 border-t-wine-400 p-7 text-left shadow-[0_18px_50px_rgb(33_27_26/0.08)] transition-colors duration-300 ${
                 isClaimed
                   ? 'cursor-default border-wine-400/50 bg-ink-900/60'
                   : 'cursor-pointer border-ivory-50/25 bg-ink-900 hover:border-wine-400/50'
               }`}
             >
+              <span aria-hidden className="absolute left-[-9px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-ink-950" />
+              <span aria-hidden className="absolute right-[-9px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-ink-950" />
               <span className="text-[10px] font-semibold tracking-[0.3em] text-ivory-500 uppercase">Voucher</span>
               <span>
                 <span
@@ -101,6 +119,7 @@ export function Coupons() {
             </motion.button>
           )
         })}
+        </motion.div>
       </div>
     </section>
   )

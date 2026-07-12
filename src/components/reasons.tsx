@@ -9,6 +9,7 @@ import {
   useVelocity,
 } from 'motion/react'
 import { reasons } from '../content'
+import { FadeImg } from './fade-img'
 import { LineReveal } from './line-reveal'
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -46,10 +47,10 @@ export function Reasons() {
       onMouseLeave={() => setActive(null)}
       className="relative mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-44"
     >
-      <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-300 uppercase">The list</p>
+      <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-300 uppercase">The short list</p>
       <h2 className="font-display mt-6 max-w-3xl text-5xl leading-[1.05] font-light tracking-tight md:text-7xl">
         <LineReveal>
-          Reasons, <span className="text-wine-300 italic">abridged.</span>
+          Why you <span className="text-wine-300 italic">win.</span>
         </LineReveal>
       </h2>
 
@@ -68,7 +69,7 @@ export function Reasons() {
             <img
               src={reasons[active].src}
               alt=""
-              className="w-60 -translate-x-1/2 -translate-y-1/2 rounded-3xl object-cover"
+              className="w-80 -translate-x-1/2 -translate-y-1/2 rounded-3xl object-cover"
             />
           </motion.div>
         )}
@@ -90,19 +91,19 @@ export function Reasons() {
               }
               setActive(i)
             }}
-            className="group grid grid-cols-1 items-center gap-4 border-t border-ivory-50/8 py-8 last:border-b md:grid-cols-[auto_1fr_auto] md:gap-10 md:py-10"
+            className="group grid grid-cols-[7.5rem_1fr] items-center gap-x-5 gap-y-2 border-t border-ivory-50/8 py-6 last:border-b md:grid-cols-[auto_1fr_auto] md:gap-10 md:py-10"
           >
-            <img
+            <FadeImg
               src={reason.src}
               alt=""
               loading="lazy"
-              className="h-20 w-16 rounded-xl object-cover md:hidden"
+              className="row-span-2 h-40 w-full rounded-xl object-cover md:hidden"
             />
-            <h3 className="font-display pb-1 text-4xl leading-[1.15] font-light tracking-tight transition-all duration-300 group-hover:translate-x-2 group-hover:text-wine-300 group-hover:italic md:text-6xl">
+            <h3 className="font-display pb-1 text-4xl leading-[1.15] font-light tracking-tight transition-all duration-300 group-hover:translate-x-2 group-hover:text-wine-300 group-hover:italic md:text-7xl">
               {reason.title}
             </h3>
-            <div />
-            <p className="text-base text-ivory-500 transition-colors duration-300 group-hover:text-ivory-300 md:text-lg">
+            <div className="hidden md:block" />
+            <p className="col-start-2 text-base text-ivory-500 transition-colors duration-300 group-hover:text-ivory-300 md:col-start-auto md:text-lg">
               {reason.phrase}
             </p>
           </motion.div>

@@ -25,3 +25,9 @@ dist-ssr
 
 .vercel
 .env
+
+# Reproducible Blender frame and review caches. Keep the editable .blend,
+# construction script, and final web-ready assets under version control.
+blender/renders*/
+blender/review*/
+*.blend1

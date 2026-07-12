@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { kids } from '../content'
+import { FadeImg } from './fade-img'
 import { LineReveal } from './line-reveal'
 
 const TILTS = [-3, 2, -2, 3, -1.5]
@@ -20,15 +21,15 @@ export function Kids() {
     <section className="mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-44">
       <div className="text-center">
         <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-300 uppercase">{kids.label}</p>
-        <h2 className="font-display mx-auto mt-6 max-w-3xl text-4xl leading-[1.1] font-light tracking-tight md:text-6xl">
+        <h2 className="font-display mx-auto mt-6 max-w-4xl text-4xl leading-[1.1] font-light tracking-tight md:text-7xl">
           <LineReveal>
-            Statements from <span className="text-wine-300 italic">the committee.</span>
+            The reviews <span className="text-wine-300 italic">are in.</span>
           </LineReveal>
         </h2>
         <p className="mt-5 text-ivory-500">{kids.sub}</p>
       </div>
 
-      <div className="mt-16 grid grid-cols-1 gap-10 sm:grid-cols-2 md:mt-24 md:grid-cols-3 md:gap-8">
+      <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-10 sm:grid-cols-2 md:mt-24 md:gap-12">
         {kids.members.map((kid, i) => (
           <motion.figure
             key={kid.name}
@@ -42,12 +43,12 @@ export function Kids() {
             dragTransition={{ bounceStiffness: 320, bounceDamping: 18 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ type: 'spring', stiffness: 120, damping: 16, delay: i * 0.08 }}
-            className={`mx-auto w-full max-w-xs rounded-2xl bg-ivory-50 p-3 pb-5 shadow-[0_20px_60px_rgb(0_0_0/0.45)] ${
+            className={`mx-auto w-full max-w-md rounded-2xl bg-ivory-50 p-3 pb-5 shadow-[0_20px_60px_rgb(70_50_45/0.18)] ${
               draggable ? 'cursor-grab active:cursor-grabbing' : ''
             }`}
           >
             <div className="pointer-events-none aspect-[5/6] overflow-hidden rounded-xl bg-ink-800">
-              <img src={kid.src} alt={kid.name} loading="lazy" className="h-full w-full object-cover" />
+              <FadeImg src={kid.src} alt={kid.name} loading="lazy" className="h-full w-full object-cover" />
             </div>
             <figcaption className="pointer-events-none px-2 pt-4">
               <p className="font-display pb-1 text-2xl leading-[1.25] text-ink-950 italic">“{kid.quote}”</p>

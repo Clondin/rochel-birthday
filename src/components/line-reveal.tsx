@@ -1,8 +1,5 @@
-import { motion, useReducedMotion } from 'motion/react'
-
-const EASE = [0.16, 1, 0.3, 1] as const
-
-/* Masked line reveal: text slides up out of an overflow-hidden band. */
+/* Headings stay visible even when the user jumps, drags the scrollbar,
+   follows an anchor, or restores a deep scroll position. */
 export function LineReveal({
   children,
   className = '',
@@ -12,18 +9,11 @@ export function LineReveal({
   className?: string
   delay?: number
 }) {
-  const reduce = useReducedMotion()
   return (
     <span className={`block overflow-hidden ${className}`}>
-      <motion.span
-        className="block pb-[0.14em]"
-        initial={reduce ? false : { y: '110%' }}
-        whileInView={{ y: 0 }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 0.9, delay, ease: EASE }}
-      >
+      <span className="block pb-[0.14em]" style={{ transitionDelay: `${delay}s` }}>
         {children}
-      </motion.span>
+      </span>
     </span>
   )
 }

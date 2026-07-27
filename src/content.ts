@@ -1,11 +1,14 @@
 /**
  * EVERYTHING EDITABLE LIVES HERE.
  *
- * Photos live in /public/photos as p01.jpg .. p65.jpg.
+ * Photos are served from /public/photos/web as p01.webp .. p120.webp.
  * p01..p43 = the airdropped family set (p01 is the one phone portrait).
  * p44..p49 = the vort, photographer portraits. p50..p55 = the vort, phone shots.
  * p56..p59 = the wedding album (p56/p59 landscape, p57/p58 portrait).
  * p60..p65 = the newer Rochel shared-album set from late 2025.
+ * p66..p77 = a curated 2022 set from the Photos library.
+ * p78..p101 = six curated photos from each year, 2023 through 2026.
+ * p102..p120 = Rochel-focused motherhood and family moments from 2023 through 2026.
  * To swap any image, just change the number or reorder these arrays.
  */
 
@@ -21,7 +24,7 @@ export const her = {
 export const hero = {
   eyebrow: 'Birthday mode: on',
   sub: 'Today is entirely yours.',
-  coverSrc: '/photos/optimized/p44.webp',
+  coverSrc: '/photos/optimized/p44-hero.webp',
   /* full-bleed image behind everything, heavily dimmed */
   bgSrc: '/photos/optimized/p56.webp',
 }
@@ -30,7 +33,7 @@ export const hero = {
 export const letter = {
   label: 'No jokes for one minute',
   headline: 'The real part.',
-  snapshotSrc: '/photos/p11.jpg',
+  snapshotSrc: '/photos/optimized/p11-letter.webp',
   paragraphs: [
     'Another year with you. Still the best thing I ever talked my way into.',
     'You make this family work. You make it louder, smarter, warmer, and a lot more fun.',
@@ -44,27 +47,103 @@ export const archive = {
   label: 'The favorites',
   sub: 'No ranking. That would start a family meeting.',
   items: [
-    { src: '/photos/p53.jpg', caption: 'The vort. Where it went official.' },
-    { src: '/photos/p45.jpg', caption: 'Already sure.' },
-    { src: '/photos/p50.jpg', caption: 'Everyone came. Obviously.' },
-    { src: '/photos/p46.jpg', caption: 'Day one, on the record.' },
-    { src: '/photos/p59.jpg', caption: 'The wedding.' },
-    { src: '/photos/p57.jpg', caption: 'The main event.' },
-    { src: '/photos/p58.jpg', caption: 'Still the best day.' },
-    { src: '/photos/p60.jpg', caption: 'A night out.' },
-    { src: '/photos/p61.jpg', caption: 'Her favorite tablemate.' },
-    { src: '/photos/p62.jpg', caption: 'Out of office.' },
-    { src: '/photos/p63.jpg', caption: 'Sunset, no notes.' },
-    { src: '/photos/p64.jpg', caption: 'The getaway.' },
-    { src: '/photos/p65.jpg', caption: 'Hanukkah with the crew.' },
-    { src: '/photos/p03.jpg', caption: 'Us.' },
-    { src: '/photos/p04.jpg', caption: 'A good day.' },
-    { src: '/photos/p05.jpg', caption: 'This one’s a keeper.' },
-    { src: '/photos/p06.jpg', caption: 'No occasion required.' },
-    { src: '/photos/p07.jpg', caption: 'Somewhere worth remembering.' },
-    { src: '/photos/p08.jpg', caption: 'The usual suspects.' },
-    { src: '/photos/p09.jpg', caption: 'Caught mid-laugh.' },
-    { src: '/photos/p10.jpg', caption: 'Home team.' },
+    { src: '/photos/web/p53.webp', caption: 'The vort. Where it went official.' },
+    { src: '/photos/web/p45.webp', caption: 'Already sure.' },
+    { src: '/photos/web/p50.webp', caption: 'Everyone came. Obviously.' },
+    { src: '/photos/web/p46.webp', caption: 'Day one, on the record.' },
+    { src: '/photos/web/p59.webp', caption: 'The wedding.' },
+    { src: '/photos/web/p57.webp', caption: 'The main event.' },
+    { src: '/photos/web/p58.webp', caption: 'Still the best day.' },
+    { src: '/photos/web/p60.webp', caption: 'A night out.' },
+    { src: '/photos/web/p61.webp', caption: 'Her favorite tablemate.' },
+    { src: '/photos/web/p62.webp', caption: 'Out of office.' },
+    { src: '/photos/web/p63.webp', caption: 'Sunset, no notes.' },
+    { src: '/photos/web/p64.webp', caption: 'The getaway.' },
+    { src: '/photos/web/p65.webp', caption: 'Hanukkah with the crew.' },
+    { src: '/photos/web/p66.webp', caption: 'Summer 2022. Already us.' },
+    { src: '/photos/web/p67.webp', caption: 'At the top of everything.' },
+    { src: '/photos/web/p68.webp', caption: 'The Venice Beach era.' },
+    { src: '/photos/web/p70.webp', caption: 'The first weeks of forever.' },
+    { src: '/photos/web/p74.webp', caption: 'Home team, away game.' },
+    { src: '/photos/web/p75.webp', caption: 'Our first winter escape.' },
+    { src: '/photos/web/p78.webp', caption: 'New York, us against the cold.' },
+    { src: '/photos/web/p80.webp', caption: 'Beach day, first full year.' },
+    { src: '/photos/web/p84.webp', caption: 'Three seats, one tiny traveler.' },
+    { src: '/photos/web/p85.webp', caption: 'Winter sun.' },
+    { src: '/photos/web/p94.webp', caption: 'Blue water, no schedule.' },
+    { src: '/photos/web/p96.webp', caption: 'Snow day with the crew.' },
+    { src: '/photos/web/p97.webp', caption: 'Cake, candles, chaos.' },
+    { src: '/photos/web/p101.webp', caption: 'The newest chapter.' },
+    { src: '/photos/web/p102.webp', caption: 'Fully committed to the bit.' },
+    { src: '/photos/web/p103.webp', caption: 'The first little hello.' },
+    { src: '/photos/web/p104.webp', caption: 'Waiting for our first teammate.' },
+    { src: '/photos/web/p106.webp', caption: 'The tiniest chapter begins.' },
+    { src: '/photos/web/p107.webp', caption: 'Mom mode, city edition.' },
+    { src: '/photos/web/p109.webp', caption: 'Pool day.' },
+    { src: '/photos/web/p110.webp', caption: 'Pony day.' },
+    { src: '/photos/web/p112.webp', caption: 'Just the girls.' },
+    { src: '/photos/web/p115.webp', caption: 'Beach girls.' },
+    { src: '/photos/web/p116.webp', caption: 'The view, and the better view.' },
+    { src: '/photos/web/p117.webp', caption: 'Hanukkah with mom.' },
+    { src: '/photos/web/p120.webp', caption: 'Mom fuel, officially.' },
+    { src: '/photos/web/p03.webp', caption: 'Us.' },
+    { src: '/photos/web/p04.webp', caption: 'A good day.' },
+    { src: '/photos/web/p05.webp', caption: 'This one’s a keeper.' },
+    { src: '/photos/web/p06.webp', caption: 'No occasion required.' },
+    { src: '/photos/web/p07.webp', caption: 'Somewhere worth remembering.' },
+    { src: '/photos/web/p08.webp', caption: 'The usual suspects.' },
+    { src: '/photos/web/p09.webp', caption: 'Caught mid-laugh.' },
+    { src: '/photos/web/p10.webp', caption: 'Home team.' },
+  ],
+}
+
+/* Five turning points, not another photo archive. The larger gallery below
+   carries the breadth; this section carries the story. */
+export const story = {
+  label: 'From then to now',
+  headline: 'It started with one yes.',
+  sub: 'A few frames from everything that followed.',
+  chapters: [
+    {
+      year: '2022',
+      date: 'July 6',
+      title: 'The yes.',
+      copy: 'A vort, a room full of people, and the easiest decision of my life.',
+      photo: '/photos/web/p44.webp',
+      focus: '50% 38%',
+    },
+    {
+      year: '2022',
+      date: 'September 11',
+      title: 'The day we became us.',
+      copy: 'The chuppah. The dancing. The start of everything we get to call ours.',
+      photo: '/photos/web/p57.webp',
+      focus: '50% 32%',
+    },
+    {
+      year: '2023',
+      date: 'Our first full year',
+      title: 'The world got bigger.',
+      copy: 'Beach mornings, road trips, and every new place becoming part of our story.',
+      photo: '/photos/web/p80.webp',
+      focus: '50% 48%',
+    },
+    {
+      year: '2024',
+      date: 'The family chapter',
+      title: 'Then there were three.',
+      copy: 'The trips changed. The bags got bigger. Somehow the fun did too.',
+      photo: '/photos/web/p106.webp',
+      focus: '50% 42%',
+    },
+    {
+      year: '2026',
+      date: 'Right now',
+      title: 'The best kind of full.',
+      copy: 'Two little girls, a louder home, and more life than that first yes could have imagined.',
+      photo: '/photos/web/p101.webp',
+      focus: '50% 48%',
+    },
   ],
 }
 
@@ -73,7 +152,7 @@ export const archive = {
    the day counter is computed from it. */
 export const interlude = {
   quote: 'Still us. Still the best call.',
-  src: '/photos/p52.jpg',
+  src: '/photos/web/p52.webp',
   metDate: '2016-03-15',
 }
 
@@ -82,32 +161,32 @@ export const reasons = [
   {
     title: 'The laugh',
     phrase: 'Still my favorite sound in any room.',
-    src: '/photos/p47.jpg',
+    src: '/photos/web/p47.webp',
   },
   {
     title: 'The brains',
     phrase: 'You out-think all of us. We have accepted it.',
-    src: '/photos/p18.jpg',
+    src: '/photos/web/p18.webp',
   },
   {
     title: 'The heart',
     phrase: 'Everyone’s first call. Mine especially.',
-    src: '/photos/p48.jpg',
+    src: '/photos/web/p48.webp',
   },
   {
     title: 'The standard',
     phrase: 'You raised the bar. I am still climbing.',
-    src: '/photos/p49.jpg',
+    src: '/photos/web/p49.webp',
   },
   {
     title: 'The patience',
     phrase: 'Mostly with me. Renewed daily.',
-    src: '/photos/p21.jpg',
+    src: '/photos/web/p21.webp',
   },
   {
     title: 'The plans',
     phrase: 'Watching them work is half the fun.',
-    src: '/photos/p22.jpg',
+    src: '/photos/web/p22.webp',
   },
 ]
 
@@ -145,12 +224,12 @@ export const kids = {
     {
       name: 'Hadassah',
       quote: 'Best mom. It’s not close.',
-      src: '/photos/p23.jpg',
+      src: '/photos/web/p23.webp',
     },
     {
       name: 'Malka',
       quote: 'Ten out of ten. Would recommend.',
-      src: '/photos/p24.jpg',
+      src: '/photos/web/p24.webp',
     },
   ],
 }
@@ -221,7 +300,7 @@ export const finale = {
   buttonLabel: 'Make a wish',
   headline: 'Happy birthday,',
   sub: 'The main event. Every year.',
-  bgSrc: '/photos/p14.jpg',
+  bgSrc: '/photos/web/p14.webp',
   /* the photo that fills the letters of her name after the wish */
-  nameFillSrc: '/photos/p57.jpg',
+  nameFillSrc: '/photos/web/p57.webp',
 }

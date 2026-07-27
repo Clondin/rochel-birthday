@@ -32,7 +32,7 @@ export function Envelopes() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-44">
       <div className="text-center">
-        <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-300 uppercase">{openWhen.label}</p>
+        <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase">{openWhen.label}</p>
         <h2 className="font-display mx-auto mt-6 max-w-3xl text-4xl leading-[1.1] font-light tracking-tight md:text-6xl">
           <LineReveal>
             Open <span className="text-wine-300 italic">when.</span>
@@ -45,6 +45,7 @@ export function Envelopes() {
         {openWhen.notes.map((note, i) => (
           <motion.button
             key={note.title}
+            data-cursor="seal"
             layoutId={reduce ? undefined : `note-${i}`}
             onClick={() => setOpen(i)}
             initial={reduce ? false : { opacity: 0, y: 30, rotate: 0 }}

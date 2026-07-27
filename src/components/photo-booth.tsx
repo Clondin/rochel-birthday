@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { ArrowsClockwise, Confetti } from '@phosphor-icons/react'
 import { motion, useReducedMotion } from 'motion/react'
-import { spark } from '../effects'
+import { celebratePhoto, spark } from '../effects'
 import { FadeImg } from './fade-img'
 
-const POOL = Array.from({ length: 65 }, (_, i) => `/photos/p${String(i + 1).padStart(2, '0')}.jpg`)
-const INITIAL = [34, 11, 42, 27, 3, 39, 15, 31, 54]
+const POOL = Array.from({ length: 120 }, (_, i) => `/photos/web/p${String(i + 1).padStart(2, '0')}.webp`)
+const INITIAL = [101, 106, 111, 117, 119, 95, 99, 64, 91]
 const EASE = [0.16, 1, 0.3, 1] as const
 
 function pickNine(previous: number[]) {
@@ -31,9 +31,9 @@ export function PhotoBooth() {
     <section id="photos" className="mx-auto max-w-[1400px] px-5 py-28 sm:px-8 md:px-10 md:py-44">
       <div className="grid items-end gap-8 md:grid-cols-[1.1fr_0.9fr]">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.38em] text-wine-400">The photo booth</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.38em] text-wine-600">The photo booth</p>
           <h2 className="mt-5 max-w-4xl text-5xl font-black uppercase leading-[0.88] tracking-[-0.055em] sm:text-6xl md:text-8xl">
-            <span className="block">65 photos.</span>
+            <span className="block">120 photos.</span>
             <span className="block text-wine-400">No bad side.</span>
           </h2>
         </div>
@@ -60,7 +60,7 @@ export function PhotoBooth() {
         {selection.map((index, i) => (
           <motion.button
             key={`${index}-${i}`}
-            onClick={(e) => spark(e.clientX, e.clientY, 12)}
+            onClick={(e) => celebratePhoto(e.clientX, e.clientY)}
             initial={reduce ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: i * 0.045, ease: EASE }}

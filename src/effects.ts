@@ -45,6 +45,7 @@ export function chime() {
 /* The full volley: chime, big center burst, side cannons, streamers. */
 export function celebrate() {
   chime()
+  window.dispatchEvent(new Event('birthday-fireworks'))
   confetti({ ...defaults, particleCount: 150, spread: 100, origin: { y: 0.7 } })
   if (starShapes.length) {
     confetti({
@@ -67,6 +68,29 @@ export function celebrate() {
     confetti({ ...defaults, particleCount: 4, angle: 118, spread: 50, startVelocity: 58, origin: { x: 1, y: 0.85 } })
     if (performance.now() < end) requestAnimationFrame(streamers)
   })()
+}
+
+/* Photo-origin celebration: the click starts locally, then opens into the
+   Blender-rendered full-screen fireworks and coordinated confetti volley. */
+export function celebratePhoto(clientX: number, clientY: number) {
+  chime()
+  window.dispatchEvent(new Event('birthday-fireworks'))
+  spark(clientX, clientY, 30)
+  if (starShapes.length) {
+    confetti({
+      ...defaults,
+      particleCount: 14,
+      spread: 74,
+      startVelocity: 24,
+      scalar: 1.2,
+      shapes: starShapes,
+      origin: { x: clientX / window.innerWidth, y: clientY / window.innerHeight },
+    })
+  }
+  setTimeout(() => {
+    confetti({ ...defaults, particleCount: 18, angle: 68, spread: 44, startVelocity: 34, origin: { x: 0, y: 0.88 } })
+    confetti({ ...defaults, particleCount: 18, angle: 112, spread: 44, startVelocity: 34, origin: { x: 1, y: 0.88 } })
+  }, 280)
 }
 
 /* A small burst at a specific point on screen. */

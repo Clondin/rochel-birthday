@@ -30,4 +30,6 @@ dist-ssr
 # construction script, and final web-ready assets under version control.
 blender/renders*/
 blender/review*/
+blender/*-renders/
+blender/*-preview/
 *.blend1

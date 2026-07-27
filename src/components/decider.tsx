@@ -46,7 +46,7 @@ export function Decider() {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-28 text-center md:px-10 md:py-44">
-      <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-300 uppercase">{decider.label}</p>
+      <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase">{decider.label}</p>
       <h2 className="font-display mx-auto mt-6 max-w-4xl text-4xl leading-[1.15] font-light tracking-tight md:text-7xl">
         <LineReveal>
           For <span className="text-wine-300 italic">“I don’t care, you pick.”</span>

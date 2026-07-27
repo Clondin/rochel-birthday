@@ -47,7 +47,7 @@ export function Reasons() {
       onMouseLeave={() => setActive(null)}
       className="relative mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-44"
     >
-      <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-300 uppercase">The short list</p>
+      <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase">The short list</p>
       <h2 className="font-display mt-6 max-w-3xl text-5xl leading-[1.05] font-light tracking-tight md:text-7xl">
         <LineReveal>
           Why you <span className="text-wine-300 italic">win.</span>

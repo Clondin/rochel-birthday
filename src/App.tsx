@@ -4,11 +4,13 @@ import { celebrate, spark } from './effects'
 import { Intro } from './components/intro'
 import { SmoothScroll } from './components/smooth-scroll'
 import { ProgressLine } from './components/progress-line'
+import { MagneticCursor } from './components/magnetic-cursor'
+import { ColorGrade } from './components/color-grade'
 import { Hero } from './components/hero'
 import { EnvelopeTransition } from './components/envelope-transition'
 import { Letter } from './components/letter'
 import { MemoryWalk } from './components/memory-walk'
-import { PhotoBooth } from './components/photo-booth'
+import { Story } from './components/story'
 const Gallery = lazy(() => import('./components/gallery').then((module) => ({ default: module.Gallery })))
 import { Interlude } from './components/interlude'
 import { Reasons } from './components/reasons'
@@ -19,6 +21,7 @@ const Decider = lazy(() => import('./components/decider').then((module) => ({ de
 const Filmstrip = lazy(() => import('./components/filmstrip').then((module) => ({ default: module.Filmstrip })))
 import { Finale } from './components/finale'
 import { EasterEgg } from './components/easter-egg'
+import { FireworksOverlay } from './components/fireworks-overlay'
 
 /* Film grain: fixed, non-scrolling, pointer-events-none. */
 const GRAIN =
@@ -42,8 +45,11 @@ export default function App() {
   return (
     <main className="relative">
       <SmoothScroll />
+      <MagneticCursor />
+      <ColorGrade />
       <Intro />
       <ProgressLine />
+      <FireworksOverlay />
 
       <div
         aria-hidden
@@ -53,7 +59,7 @@ export default function App() {
       <Hero />
       <EnvelopeTransition />
       <Letter />
-      <PhotoBooth />
+      <Story />
       <MemoryWalk />
       <Suspense fallback={<div className="min-h-[100dvh] bg-ink-900" aria-label="Loading photos" />}>
         <Gallery />

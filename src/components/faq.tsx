@@ -13,7 +13,7 @@ export function Faq() {
 
   return (
     <section className="mx-auto max-w-4xl px-6 py-28 md:py-44">
-      <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-300 uppercase">{faq.label}</p>
+      <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase">{faq.label}</p>
       <h2 className="font-display mt-6 text-5xl leading-[1.05] font-light tracking-tight md:text-7xl">
         <LineReveal>
           Frequently <span className="text-wine-300 italic">asked.</span>

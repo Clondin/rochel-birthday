@@ -1,9 +1,9 @@
 import { FadeImg } from './fade-img'
 
-/* Every photo in the pool, p01..p65. */
-const ALL = Array.from({ length: 65 }, (_, i) => `/photos/p${String(i + 1).padStart(2, '0')}.jpg`)
-const ROW_A = ALL.slice(0, 33)
-const ROW_B = ALL.slice(33)
+/* Every photo in the pool, p01..p120. */
+const ALL = Array.from({ length: 120 }, (_, i) => `/photos/web/p${String(i + 1).padStart(2, '0')}.webp`)
+const ROW_A = ALL.slice(0, 60)
+const ROW_B = ALL.slice(60)
 
 function Row({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
   /* Content duplicated once; the track slides exactly one copy's width. */
@@ -40,8 +40,8 @@ function Row({ items, reverse = false }: { items: string[]; reverse?: boolean })
 export function Filmstrip() {
   return (
     <section className="space-y-3 py-24 md:py-36">
-      <p className="mx-auto max-w-7xl px-6 pb-8 text-[11px] font-semibold tracking-[0.4em] text-wine-300 uppercase md:px-10">
-        All 65. Because picking favorites failed.
+      <p className="mx-auto max-w-7xl px-6 pb-8 text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase md:px-10">
+        All 120. Because picking favorites failed.
       </p>
       <Row items={ROW_A} />
       <Row items={ROW_B} reverse />

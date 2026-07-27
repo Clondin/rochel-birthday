@@ -16,6 +16,7 @@
   --color-ivory-300: #4d4240;
   --color-ivory-500: #776967;
   --color-wine-300: #e3452b;
+  --color-wine-200: #ff7a63;
   --color-wine-400: #ef4b2f;
   --color-wine-600: #c93620;
   --color-rose-300: #ef4b2f;
@@ -201,6 +202,44 @@ html {
 
 .glow-pulse {
   animation: glow-pulse 3.2s ease-in-out infinite;
+}
+
+/* Hide system cursor when the magnetic blob is live (desktop only) */
+.has-magnetic-cursor,
+.has-magnetic-cursor * {
+  cursor: none !important;
+}
+
+/* Letter stationery corner fold */
+.letter-curl {
+  background: linear-gradient(225deg, transparent 48%, rgb(201 160 120 / 0.35) 48%, #efe2d0 56%, #f7f1e8 100%);
+  box-shadow: -6px -6px 14px rgb(70 50 45 / 0.08);
+  border-bottom-right-radius: 1.1rem;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.letter-sheet {
+  transform-origin: center top;
+  will-change: transform;
+}
+
+/* Glass voucher specular swipe */
+.glass-sheen {
+  animation: glass-sheen 2.8s ease-in-out infinite;
+}
+
+@keyframes glass-sheen {
+  0% {
+    transform: translateX(-30%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(280%) skewX(-18deg);
+  }
+}
+
+.glass-card {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Infinite marquee: track holds two copies of its content, slides one copy's width */

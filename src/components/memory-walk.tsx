@@ -11,8 +11,8 @@ import {
 } from 'motion/react'
 
 const VIDEO_SRC = '/video/our-memory-walk.mp4'
-const POSTER_SRC = '/video/our-memory-walk-poster.jpg'
-const BLOOM_SRC = '/photos/p57.jpg'
+const POSTER_SRC = '/video/our-memory-walk-poster.webp'
+const BLOOM_SRC = '/photos/web/p57.webp'
 
 type Viewport = { w: number; h: number }
 
@@ -146,7 +146,7 @@ export function MemoryWalk() {
   const line2 = useTransform(smoothProgress, [0.58, 0.68, 0.79], [0, 1, 0])
 
   /* Handoff: a warm flare at the doorway, out of which the final memory blooms
-     — the whole photograph, framed, arriving at the end of the hall. */
+     The whole photograph, framed, arrives at the end of the hall. */
   const flare = useTransform(smoothProgress, [0.72, 0.83, 0.93], [0, 0.85, 0])
   const bloomOpacity = useTransform(smoothProgress, [0.78, 0.84], [0, 1])
   const bloomScale = useTransform(smoothProgress, [0.8, 1], [0.06, 1])
@@ -168,6 +168,20 @@ export function MemoryWalk() {
     },
     [],
   )
+
+  useEffect(() => {
+    if (reduce || !sectionRef.current || !videoRef.current) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return
+        videoRef.current?.load()
+        observer.disconnect()
+      },
+      { rootMargin: '1200px 0px' },
+    )
+    observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+  }, [reduce])
 
   /* Reduced motion: a still corridor with one framed memory and the line. */
   if (reduce) {
@@ -203,7 +217,7 @@ export function MemoryWalk() {
           style={{ scale: videoScale }}
           src={VIDEO_SRC}
           poster={POSTER_SRC}
-          preload="auto"
+          preload="none"
           muted
           playsInline
           aria-hidden="true"
@@ -228,7 +242,7 @@ export function MemoryWalk() {
 
         <WallPhoto
           progress={smoothProgress}
-          src="/photos/p45.jpg"
+          src="/photos/web/p45.webp"
           side="right"
           range={[0.05, 0.29]}
           lane={-0.04}
@@ -239,7 +253,7 @@ export function MemoryWalk() {
         />
         <WallPhoto
           progress={smoothProgress}
-          src="/photos/p59.jpg"
+          src="/photos/web/p59.webp"
           side="left"
           range={[0.19, 0.45]}
           lane={-0.02}
@@ -250,7 +264,7 @@ export function MemoryWalk() {
         />
         <WallPhoto
           progress={smoothProgress}
-          src="/photos/p52.jpg"
+          src="/photos/web/p52.webp"
           side="right"
           range={[0.35, 0.6]}
           lane={0.01}
@@ -261,7 +275,7 @@ export function MemoryWalk() {
         />
         <WallPhoto
           progress={smoothProgress}
-          src="/photos/p49.jpg"
+          src="/photos/web/p49.webp"
           side="left"
           range={[0.51, 0.75]}
           lane={-0.03}
@@ -271,7 +285,7 @@ export function MemoryWalk() {
           desktop={desktop}
         />
 
-        {/* wall falloff — darkens photos as they pass into the corridor's edges */}
+        {/* Wall falloff darkens photos as they pass into the corridor's edges. */}
         <div
           aria-hidden
           className="absolute inset-0 z-20 shadow-[inset_0_0_150px_rgb(33_27_26/0.34)] md:shadow-[inset_0_0_240px_rgb(33_27_26/0.38)]"

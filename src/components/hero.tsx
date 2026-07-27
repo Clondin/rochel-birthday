@@ -13,25 +13,28 @@ import { celebrate } from '../effects'
 import { FadeImg } from './fade-img'
 
 const EASE = [0.16, 1, 0.3, 1] as const
-const T0 = 1.65
+const T0 = 0.55
 
 function KineticName({ name }: { name: string }) {
   const reduce = useReducedMotion()
   return (
-    <span aria-label={name}>
-      {name.split('').map((character, i) => (
-        <span key={i} aria-hidden className="inline-block overflow-hidden pb-[0.12em] align-bottom">
-          <motion.span
-            className="inline-block"
-            initial={reduce ? false : { y: '112%' }}
-            animate={{ y: 0 }}
-            transition={{ duration: 1, delay: T0 + 0.12 + i * 0.055, ease: EASE }}
-          >
-            {character}
-          </motion.span>
-        </span>
-      ))}
-    </span>
+    <>
+      <span className="sr-only">{name}</span>
+      <span aria-hidden>
+        {name.split('').map((character, i) => (
+          <span key={i} className="inline-block overflow-hidden pb-[0.12em] align-bottom">
+            <motion.span
+              className="inline-block"
+              initial={reduce ? false : { y: '112%' }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1, delay: T0 + 0.12 + i * 0.055, ease: EASE }}
+            >
+              {character}
+            </motion.span>
+          </span>
+        ))}
+      </span>
+    </>
   )
 }
 
@@ -97,7 +100,7 @@ export function Hero() {
         <FadeImg
           src={hero.bgSrc}
           alt=""
-          fetchPriority="high"
+          fetchPriority="low"
           loadedClass="opacity-25"
           className="h-full w-full scale-105 object-cover blur-[2px]"
         />
@@ -147,7 +150,7 @@ export function Hero() {
         transition={{ type: 'spring', stiffness: 95, damping: 16, delay: T0 + 0.72 }}
         className="absolute left-[5vw] top-[22%] z-[3] hidden w-36 overflow-hidden rounded-xl border-[5px] border-ink-950 bg-ink-900 shadow-[0_20px_55px_rgb(33_27_26/0.18)] md:block lg:left-[11vw] lg:w-44"
       >
-        <FadeImg src="/photos/optimized/p57.webp" alt="Rochel on her wedding day" fetchPriority="high" className="aspect-[4/5] w-full object-cover" />
+        <FadeImg src="/photos/optimized/p57.webp" alt="Rochel on her wedding day" loading="lazy" className="aspect-[4/5] w-full object-cover" />
       </motion.div>
 
       <motion.div
@@ -156,7 +159,7 @@ export function Hero() {
         transition={{ type: 'spring', stiffness: 95, damping: 16, delay: T0 + 0.86 }}
         className="absolute bottom-[16%] right-[5vw] z-[3] hidden w-36 overflow-hidden rounded-xl border-[5px] border-ink-950 bg-ink-900 shadow-[0_20px_55px_rgb(33_27_26/0.18)] md:block lg:right-[11vw] lg:w-44"
       >
-        <FadeImg src="/photos/optimized/p23.webp" alt="A family favorite" fetchPriority="high" className="aspect-square w-full object-cover" />
+        <FadeImg src="/photos/optimized/p23.webp" alt="A family favorite" loading="lazy" className="aspect-square w-full object-cover" />
       </motion.div>
 
       <motion.div style={reduce ? undefined : { y: nameY, opacity: fade }} className="pointer-events-none relative z-10 text-center">

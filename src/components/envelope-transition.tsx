@@ -8,16 +8,33 @@ import {
   useTransform,
 } from 'motion/react'
 
-const VIDEO_SRC = '/video/envelope-transition.mp4'
-const POSTER_SRC = '/video/envelope-transition-poster.jpg'
+const VIDEO_SRC = '/video/envelope-transition.mp4?v=cinematic-5'
+const POSTER_SRC = '/video/envelope-transition-poster.webp?v=cinematic-5'
+const MOBILE_VIDEO_SRC = '/video/envelope-transition-mobile.mp4?v=cinematic-5'
+const MOBILE_POSTER_SRC = '/video/envelope-transition-mobile-poster.webp?v=cinematic-5'
 
 export function EnvelopeTransition() {
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const seekFrameRef = useRef<number | null>(null)
-  const durationRef = useRef(6)
+  const durationRef = useRef(8)
   const reduce = useReducedMotion()
   const [ready, setReady] = useState(false)
+  const [mobile, setMobile] = useState(() => window.matchMedia('(max-width: 639px)').matches)
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 639px)')
+    const update = () => setMobile(query.matches)
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    setReady(false)
+    video.load()
+  }, [mobile])
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -67,27 +84,29 @@ export function EnvelopeTransition() {
     <section
       ref={sectionRef}
       aria-label="An envelope opens to reveal a letter for Rochel"
-      className="relative h-[230dvh] bg-ink-950 sm:h-[285dvh] lg:h-[320dvh]"
+      className="relative h-[280dvh] bg-ink-950 sm:h-[360dvh] lg:h-[420dvh]"
     >
       <div className="sticky top-0 h-[100dvh] overflow-hidden bg-ink-950">
         <video
           ref={videoRef}
-          src={VIDEO_SRC}
-          poster={POSTER_SRC}
+          poster={mobile ? MOBILE_POSTER_SRC : POSTER_SRC}
           preload="auto"
           muted
           playsInline
           aria-hidden="true"
           onLoadedMetadata={(event) => {
             const video = event.currentTarget
-            durationRef.current = video.duration || 6
+            durationRef.current = video.duration || 8
             video.pause()
             // Respect restored scroll positions instead of flashing frame zero.
             video.currentTime = Math.min(durationRef.current - 0.025, timeline.get() * durationRef.current)
             setReady(true)
           }}
-          className="h-full w-full object-cover object-center max-sm:scale-[1.18]"
-        />
+          className="h-full w-full object-cover object-center"
+        >
+          <source src={MOBILE_VIDEO_SRC} media="(max-width: 639px)" type="video/mp4" />
+          <source src={VIDEO_SRC} type="video/mp4" />
+        </video>
 
         {!ready && <div aria-hidden className="pointer-events-none absolute inset-0 animate-pulse bg-ink-900/10" />}
         <div aria-hidden className="pointer-events-none absolute inset-0 shadow-[inset_0_0_120px_rgb(33_27_26/0.12)] sm:shadow-[inset_0_0_180px_rgb(33_27_26/0.13)]" />

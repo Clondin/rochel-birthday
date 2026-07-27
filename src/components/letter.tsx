@@ -113,7 +113,7 @@ export function Letter() {
                   transformStyle: 'preserve-3d',
                 }
           }
-          className="letter-sheet relative overflow-hidden rounded-[1.25rem] border border-ivory-50/10 bg-[linear-gradient(165deg,#fbf6ee_0%,#f3e8d8_48%,#efe2d0_100%)] px-7 py-9 sm:px-10 sm:py-12"
+          className="letter-sheet relative mx-2 overflow-hidden rounded-[1.25rem] border border-ivory-50/10 bg-[linear-gradient(165deg,#fbf6ee_0%,#f3e8d8_48%,#efe2d0_100%)] px-7 py-9 sm:px-10 sm:py-12 md:mx-0"
         >
           {/* paper tooth / fiber */}
           <div

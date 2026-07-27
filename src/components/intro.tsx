@@ -35,7 +35,7 @@ export function Intro() {
           transition={{ duration: 0.78, times: [0, 0.2, 0.76, 1], ease: [0.16, 1, 0.3, 1] }}
           className="text-center text-[clamp(3.5rem,13vw,10rem)] font-black uppercase leading-[0.78] tracking-[-0.07em] text-ink-950"
         >
-          Birthday<br />mode
+          July<br />02
         </motion.p>
       </div>
     </motion.div>

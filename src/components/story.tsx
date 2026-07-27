@@ -24,7 +24,6 @@ export function Story() {
           >
             {story.headline}
           </h2>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ivory-500 md:text-xl">{story.sub}</p>
         </div>
       </header>
 

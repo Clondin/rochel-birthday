@@ -100,41 +100,6 @@ html {
   scroll-behavior: smooth;
 }
 
-@keyframes orbit {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.party-orbit {
-  animation: orbit 24s linear infinite;
-}
-
-.party-orbit::before,
-.party-orbit::after {
-  content: '';
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: var(--color-wine-400);
-}
-
-.party-orbit::before {
-  left: 8%;
-  top: 18%;
-}
-
-.party-orbit::after {
-  bottom: 12%;
-  right: 20%;
-}
-
-.party-orbit-reverse {
-  animation-direction: reverse;
-  animation-duration: 31s;
-}
-
 /* Slow drift on the hero portrait */
 @keyframes ken-burns {
   from {
@@ -176,17 +141,6 @@ html {
   animation: fill-pan 9s ease-in-out infinite alternate;
 }
 
-/* Slow-spinning text ring in the hero */
-@keyframes spin-slow {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.spin-slow svg {
-  animation: spin-slow 55s linear infinite;
-}
-
 /* Breathing glow behind the wish button */
 @keyframes glow-pulse {
   0%,
@@ -204,12 +158,6 @@ html {
   animation: glow-pulse 3.2s ease-in-out infinite;
 }
 
-/* Hide system cursor when the magnetic blob is live (desktop only) */
-.has-magnetic-cursor,
-.has-magnetic-cursor * {
-  cursor: none !important;
-}
-
 /* Letter stationery corner fold */
 .letter-curl {
   background: linear-gradient(225deg, transparent 48%, rgb(201 160 120 / 0.35) 48%, #efe2d0 56%, #f7f1e8 100%);
@@ -221,25 +169,6 @@ html {
 .letter-sheet {
   transform-origin: center top;
   will-change: transform;
-}
-
-/* Glass voucher specular swipe */
-.glass-sheen {
-  animation: glass-sheen 2.8s ease-in-out infinite;
-}
-
-@keyframes glass-sheen {
-  0% {
-    transform: translateX(-30%) skewX(-18deg);
-  }
-  100% {
-    transform: translateX(280%) skewX(-18deg);
-  }
-}
-
-.glass-card {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Infinite marquee: track holds two copies of its content, slides one copy's width */
@@ -265,11 +194,9 @@ html {
     animation: none;
     opacity: 0;
   }
-  .spin-slow svg,
   .glow-pulse,
   .ken-burns,
-  .text-photo-fill,
-  .party-orbit {
+  .text-photo-fill {
     animation: none;
   }
 }

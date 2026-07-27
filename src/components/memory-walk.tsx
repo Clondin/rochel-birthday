@@ -141,10 +141,6 @@ export function MemoryWalk() {
   /* Ambient wall falloff that deepens into a tunnel as we approach the light. */
   const tunnel = useTransform(smoothProgress, [0.66, 0.94], [0, 0.55])
 
-  /* The two spoken beats, placed only where they carry weight. */
-  const line1 = useTransform(smoothProgress, [0.04, 0.12, 0.22], [0, 1, 0])
-  const line2 = useTransform(smoothProgress, [0.58, 0.68, 0.79], [0, 1, 0])
-
   /* Handoff: a warm flare at the doorway, out of which the final memory blooms
      The whole photograph, framed, arrives at the end of the hall. */
   const flare = useTransform(smoothProgress, [0.72, 0.83, 0.93], [0, 0.85, 0])
@@ -198,9 +194,6 @@ export function MemoryWalk() {
             <img src={BLOOM_SRC} alt="Cheskie and Rochel on their wedding day" className="h-full w-full object-cover" />
           </div>
         </figure>
-        <p className="font-display absolute inset-x-6 bottom-[9vh] z-10 mx-auto max-w-3xl text-center text-3xl font-semibold italic leading-tight text-ivory-50 [text-shadow:0_2px_26px_rgb(247_241_232/0.9)] sm:text-4xl md:text-5xl">
-          Then we kept going. Right into everything else.
-        </p>
       </section>
     )
   }
@@ -319,18 +312,6 @@ export function MemoryWalk() {
         </div>
         <motion.div aria-hidden style={{ opacity: finalWash }} className="absolute inset-0 z-40 bg-ink-950" />
 
-        <motion.p
-          style={{ opacity: line1 }}
-          className="font-display absolute inset-x-6 bottom-[12vh] z-50 mx-auto max-w-4xl text-center text-4xl font-semibold italic leading-[1.12] text-ivory-50 [text-shadow:0_2px_30px_rgb(247_241_232/0.92)] sm:text-5xl md:text-7xl"
-        >
-          Then we kept going.
-        </motion.p>
-        <motion.p
-          style={{ opacity: line2 }}
-          className="font-display absolute inset-x-6 bottom-[12vh] z-50 mx-auto max-w-4xl text-center text-4xl font-semibold italic leading-[1.12] text-ivory-50 [text-shadow:0_2px_30px_rgb(247_241_232/0.92)] sm:text-5xl md:text-7xl"
-        >
-          Right into everything else.
-        </motion.p>
       </div>
     </section>
   )

@@ -1,25 +1,21 @@
 # For Rochel
 
-A birthday page. Dark plum, wine accent, serif type, big effects: an intro curtain, Lenis smooth scrolling, a kinetic name reveal inside a spinning type ring, cursor and scroll parallax, velocity-reactive marquee bands, a word-by-word scroll-lit letter, a pinned horizontal photo gallery with inner parallax, a full-screen quote interlude with a live day counter, a cursor-trailing reasons list, draggable kid cards, sealed "open when" notes that morph into letters, and a heart-confetti finale.
-
-Note: `metDate` in `src/content.ts` drives the "Day N of us" counter. Set it to the real date.
+A birthday letter and family photo album for Rochel. The page includes a Blender-rendered envelope, a short dated family timeline, a cinematic photo hallway, two photo galleries, and a fireworks finale.
 
 ## Make it hers
 
-All text and photos live in one file: `src/content.ts`.
+The visible text lives in `src/content.ts`. Web-ready photographs live in `public/photos/web/`. The Blender source scenes and build scripts live in `blender/`.
 
-1. Drop real photos into `public/photos/`
-2. In `src/content.ts`, change each `src` from the picsum placeholder to `/photos/your-file.jpg`
-3. Edit the letter, reasons, kid names, and quotes in the same file
+Raw Blender render frames are intentionally excluded from Git and Vercel.
 
 ## Setup
 
 1. `git clone` this repo
 2. `npm install`
-3. `npm run dev` → opens at localhost:5173
+3. `npm run dev`
 
-No env vars needed.
+The local site opens at `http://localhost:5173`. No environment variables are required.
 
 ## Deploy
 
-Deployed via Vercel. Push to main to redeploy, or run `vercel --prod`.
+The site deploys through Vercel when `main` changes.

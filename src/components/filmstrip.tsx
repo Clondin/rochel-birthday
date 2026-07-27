@@ -41,7 +41,7 @@ export function Filmstrip() {
   return (
     <section className="space-y-3 py-24 md:py-36">
       <p className="mx-auto max-w-7xl px-6 pb-8 text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase md:px-10">
-        All 120. Because picking favorites failed.
+        The rest of the photos.
       </p>
       <Row items={ROW_A} />
       <Row items={ROW_B} reverse />

@@ -48,7 +48,6 @@ export function EnvelopeTransition() {
   })
   // Brief calm at both ends; the middle remains direct enough to feel tactile.
   const timeline = useTransform(smoothProgress, [0, 0.07, 0.9, 1], [0, 0, 0.965, 1])
-  const cueOpacity = useTransform(smoothProgress, [0.02, 0.1, 0.2], [0, 0.8, 0])
   const finalPaper = useTransform(smoothProgress, [0.93, 1], [0, 1])
 
   useMotionValueEvent(timeline, 'change', (progress) => {
@@ -110,12 +109,6 @@ export function EnvelopeTransition() {
 
         {!ready && <div aria-hidden className="pointer-events-none absolute inset-0 animate-pulse bg-ink-900/10" />}
         <div aria-hidden className="pointer-events-none absolute inset-0 shadow-[inset_0_0_120px_rgb(33_27_26/0.12)] sm:shadow-[inset_0_0_180px_rgb(33_27_26/0.13)]" />
-        <motion.p
-          style={{ opacity: cueOpacity }}
-          className="pointer-events-none absolute bottom-7 left-1/2 -translate-x-1/2 text-[10px] font-semibold tracking-[0.32em] text-ivory-500 uppercase"
-        >
-          Open the letter
-        </motion.p>
         <motion.div aria-hidden style={{ opacity: finalPaper }} className="pointer-events-none absolute inset-0 bg-ink-950" />
       </div>
     </section>

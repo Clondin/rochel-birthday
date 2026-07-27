@@ -219,7 +219,7 @@ export function Finale() {
               onClick={celebrate}
               className="mt-10 rounded-full border border-ivory-50/20 px-8 py-3 text-sm font-medium tracking-[0.2em] text-ivory-300 uppercase transition-all duration-200 hover:border-wine-400/60 hover:text-ivory-50 active:scale-[0.98]"
             >
-              One more wish
+              More fireworks
             </motion.button>
           </motion.div>
         )}

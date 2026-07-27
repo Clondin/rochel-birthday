@@ -38,30 +38,6 @@ function KineticName({ name }: { name: string }) {
   )
 }
 
-function BirthdayRing() {
-  const reduce = useReducedMotion()
-  return (
-    <motion.div
-      aria-hidden
-      initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.1, delay: T0 + 0.55, ease: EASE }}
-      className="spin-slow pointer-events-none absolute left-1/2 top-1/2 z-[1] w-[94vw] max-w-[640px] -translate-x-1/2 -translate-y-1/2 sm:w-[72vw] lg:w-[48vw]"
-    >
-      <svg viewBox="0 0 200 200" className="h-auto w-full">
-        <defs>
-          <path id="birthday-ring" d="M 100,100 m -89,0 a 89,89 0 1,1 178,0 a 89,89 0 1,1 -178,0" />
-        </defs>
-        <text className="fill-wine-400 text-[8.4px] font-bold uppercase" style={{ letterSpacing: '0.34em' }}>
-          <textPath href="#birthday-ring">
-            Happy birthday ✶ main event ✶ happy birthday ✶ main event ✶
-          </textPath>
-        </text>
-      </svg>
-    </motion.div>
-  )
-}
-
 export function Hero() {
   const ref = useRef<HTMLElement>(null)
   const reduce = useReducedMotion()
@@ -107,9 +83,6 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/42 to-ink-950/85" />
       </motion.div>
 
-      <div aria-hidden className="party-orbit absolute -right-44 -top-52 h-[34rem] w-[34rem] rounded-full border border-wine-400/20" />
-      <div aria-hidden className="party-orbit party-orbit-reverse absolute -bottom-56 -left-44 h-[30rem] w-[30rem] rounded-full border border-wine-400/15" />
-
       <motion.header
         initial={reduce ? false : { opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -120,8 +93,6 @@ export function Hero() {
         <span className="text-wine-400">July 02</span>
         <span>From {her.from}</span>
       </motion.header>
-
-      <BirthdayRing />
 
       <motion.div
         style={reduce ? undefined : { y: portraitY, scale: portraitScale }}
@@ -136,7 +107,7 @@ export function Hero() {
         >
           <FadeImg
             src={hero.coverSrc}
-            alt={`${her.name}, the birthday girl`}
+            alt={her.name}
             fetchPriority="high"
             className="ken-burns aspect-[3/4.25] w-full object-cover object-[50%_34%]"
           />
@@ -164,14 +135,6 @@ export function Hero() {
 
       <motion.div style={reduce ? undefined : { y: nameY, opacity: fade }} className="pointer-events-none relative z-10 text-center">
         <motion.div style={reduce ? undefined : { x: typeX, y: typeY }}>
-          <motion.p
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: T0 + 0.55 }}
-            className="mb-2 text-[10px] font-bold uppercase tracking-[0.42em] text-wine-400 sm:text-xs"
-          >
-            {hero.eyebrow}
-          </motion.p>
           <h1 className="font-display font-wonk pb-3 text-[clamp(4.8rem,17vw,14rem)] font-light italic leading-[0.9] tracking-[-0.045em] text-ivory-50 drop-shadow-[0_2px_12px_rgb(247_241_232/0.7)]">
             <KineticName name={her.name} />
           </h1>
@@ -194,7 +157,7 @@ export function Hero() {
         className="absolute bottom-6 z-20 inline-flex items-center gap-2 rounded-full bg-wine-400 px-6 py-3.5 text-sm font-bold text-ivory-50 shadow-[0_14px_40px_rgb(239_75_47/0.2)] transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
       >
         <Confetti size={18} weight="bold" />
-        Start the party
+        Fireworks
       </motion.button>
     </section>
   )

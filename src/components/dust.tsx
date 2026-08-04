@@ -7,7 +7,6 @@ type Speck = {
   delay: string
   sway: string
   opacity: string
-  blur: number
   wine: boolean
 }
 
@@ -23,7 +22,6 @@ export function Dust({ count = 14 }: { count?: number }) {
         delay: `${-Math.random() * 22}s`,
         sway: `${(Math.random() - 0.5) * 8}vw`,
         opacity: `${0.12 + Math.random() * 0.25}`,
-        blur: Math.random() > 0.5 ? 1.5 : 0,
         wine: Math.random() > 0.65,
       })),
     [count],
@@ -39,7 +37,6 @@ export function Dust({ count = 14 }: { count?: number }) {
             left: s.left,
             width: s.size,
             height: s.size,
-            filter: s.blur ? `blur(${s.blur}px)` : undefined,
             ['--dust-duration' as string]: s.duration,
             ['--dust-delay' as string]: s.delay,
             ['--dust-sway' as string]: s.sway,

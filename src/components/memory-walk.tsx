@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   motion,
-  useMotionTemplate,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
@@ -72,13 +71,9 @@ function WallPhoto({ progress, src, side, range, lane, frameClass, aspectClass, 
     [enter, enter + span * 0.16, exit - span * 0.32, exit],
     [0, 1, 1, 0],
   )
+  /* Depth is sold by the haze wash + fade alone. A scroll-driven blur()
+     filter here forced a repaint of the framed photo on every frame. */
   const haze = useTransform(progress, [enter, enter + span * 0.5, exit], [0.72, 0, 0.44])
-  const blurPx = useTransform(
-    progress,
-    [enter, enter + span * 0.16, exit - span * 0.2, exit],
-    [3.2, 0, 0, 2.6],
-  )
-  const filter = useMotionTemplate`blur(${blurPx}px)`
 
   return (
     <div
@@ -86,7 +81,7 @@ function WallPhoto({ progress, src, side, range, lane, frameClass, aspectClass, 
       className="pointer-events-none absolute inset-0 z-10 grid place-items-center [perspective:1400px]"
     >
       <motion.figure
-        style={{ x, y, scale, rotateY, rotateZ, opacity, ...(desktop ? { filter } : null) }}
+        style={{ x, y, scale, rotateY, rotateZ, opacity }}
         className={`origin-center rounded-[3px] bg-[#f8f2e9] p-[3.5%] shadow-[0_44px_70px_-32px_rgb(33_27_26/0.72),0_12px_26px_-14px_rgb(33_27_26/0.55)] will-change-transform ${frameClass}`}
       >
         <div className={`relative overflow-hidden rounded-[2px] ring-1 ring-ivory-50/10 ${aspectClass}`}>
@@ -154,7 +149,8 @@ export function MemoryWalk() {
     if (frameRef.current !== null) cancelAnimationFrame(frameRef.current)
     frameRef.current = requestAnimationFrame(() => {
       const target = Math.min(durationRef.current - 0.04, Math.max(0, value * durationRef.current))
-      if (Math.abs(video.currentTime - target) > 0.03) video.currentTime = target
+      /* Only seek once we're a full frame (24fps) off — each seek costs a decode burst. */
+      if (Math.abs(video.currentTime - target) > 1 / 24) video.currentTime = target
     })
   })
 
@@ -235,7 +231,7 @@ export function MemoryWalk() {
 
         <WallPhoto
           progress={smoothProgress}
-          src="/photos/web/p45.webp"
+          src="/photos/card/p45.webp"
           side="right"
           range={[0.05, 0.29]}
           lane={-0.04}
@@ -246,7 +242,7 @@ export function MemoryWalk() {
         />
         <WallPhoto
           progress={smoothProgress}
-          src="/photos/web/p59.webp"
+          src="/photos/card/p59.webp"
           side="left"
           range={[0.19, 0.45]}
           lane={-0.02}
@@ -257,7 +253,7 @@ export function MemoryWalk() {
         />
         <WallPhoto
           progress={smoothProgress}
-          src="/photos/web/p52.webp"
+          src="/photos/card/p52.webp"
           side="right"
           range={[0.35, 0.6]}
           lane={0.01}
@@ -268,7 +264,7 @@ export function MemoryWalk() {
         />
         <WallPhoto
           progress={smoothProgress}
-          src="/photos/web/p49.webp"
+          src="/photos/card/p49.webp"
           side="left"
           range={[0.51, 0.75]}
           lane={-0.03}

@@ -15,8 +15,16 @@
 export const her = {
   name: 'Rochel',
   from: 'Cheskie',
-  /* MM-DD. On this date the page celebrates by itself when it opens. */
-  birthday: '07-02',
+  /* MM-DD. On this date the page celebrates by itself when it opens.
+     The hero header and intro date derive from this too. */
+  birthday: '08-04',
+}
+
+/* "August" / "04", derived from her.birthday so the date lives in one place. */
+const [bMonth, bDay] = her.birthday.split('-')
+export const birthdayLabel = {
+  month: new Date(2000, Number(bMonth) - 1, 1).toLocaleString('en-US', { month: 'long' }),
+  day: bDay,
 }
 
 export const hero = {
@@ -26,16 +34,18 @@ export const hero = {
   bgSrc: '/photos/optimized/p56.webp',
 }
 
-/* The letter. Short, warm, true. */
+/* The letter. */
 export const letter = {
   label: 'From me',
-  headline: 'Rochel,',
+  headline: 'Dear Rochel,',
   snapshotSrc: '/photos/optimized/p11-letter.webp',
   paragraphs: [
-    'Another year with you. Still the best thing I ever talked my way into.',
-    'I love our loud house, our girls, our trips, and the quiet nights when nobody needs anything.',
-    'You are the person I want beside me for all of it. Happy birthday. I love you.',
+    'Happy birthday. It’s crazy that we’ve gone from essentially being kids when we got married to now having two of our own.',
+    'You are such an amazing human, wife, and mother to our kids. I have a tremendous amount of admiration and respect for everything you manage to juggle in your life.',
+    'Mazel tov on turning 25. I look forward to spending many more birthdays together.',
   ],
+  closing: 'Love,',
+  postscript: 'P.S. This letter was written by me, not the AI lol.',
 }
 
 /* The photographs that lead the gallery. */
@@ -141,10 +151,15 @@ export const story = {
   ],
 }
 
-/* A quiet photograph between the two galleries. */
+/* A quiet photograph between the two galleries — and a video message
+   that pops out and plays (with sound) when you scroll to it. */
 export const interlude = {
   src: '/photos/web/p52.webp',
   alt: 'Cheskie and Rochel together',
+  video: {
+    src: '/video/birthday-message.mp4',
+    label: 'A message for Mommy',
+  },
 }
 
 export const finale = {

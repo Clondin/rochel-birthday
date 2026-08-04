@@ -8,10 +8,8 @@ import {
   useTransform,
 } from 'motion/react'
 
-const VIDEO_SRC = '/video/envelope-transition.mp4?v=cinematic-5'
-const POSTER_SRC = '/video/envelope-transition-poster.webp?v=cinematic-5'
-const MOBILE_VIDEO_SRC = '/video/envelope-transition-mobile.mp4?v=cinematic-5'
-const MOBILE_POSTER_SRC = '/video/envelope-transition-mobile-poster.webp?v=cinematic-5'
+const VIDEO_SRC = '/video/envelope-transition.mp4?v=cinematic-6'
+const POSTER_SRC = '/video/envelope-transition-poster.webp?v=cinematic-6'
 
 export function EnvelopeTransition() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -20,6 +18,7 @@ export function EnvelopeTransition() {
   const durationRef = useRef(8)
   const reduce = useReducedMotion()
   const [ready, setReady] = useState(false)
+  const [shouldLoad, setShouldLoad] = useState(false)
   const [mobile, setMobile] = useState(() => window.matchMedia('(max-width: 639px)').matches)
 
   useEffect(() => {
@@ -29,12 +28,28 @@ export function EnvelopeTransition() {
     return () => query.removeEventListener('change', update)
   }, [])
 
+  /* Don't fetch megabytes of video while the hero is still painting;
+     start loading once the section is within ~1.5 viewports. */
+  useEffect(() => {
+    if (!sectionRef.current) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return
+        setShouldLoad(true)
+        observer.disconnect()
+      },
+      { rootMargin: '1600px 0px' },
+    )
+    observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+  }, [])
+
   useEffect(() => {
     const video = videoRef.current
-    if (!video) return
+    if (!video || !shouldLoad) return
     setReady(false)
     video.load()
-  }, [mobile])
+  }, [shouldLoad])
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -56,7 +71,8 @@ export function EnvelopeTransition() {
     if (seekFrameRef.current !== null) cancelAnimationFrame(seekFrameRef.current)
     seekFrameRef.current = requestAnimationFrame(() => {
       const target = Math.min(durationRef.current - 0.025, Math.max(0, progress * durationRef.current))
-      if (Math.abs(video.currentTime - target) > 1 / 48) video.currentTime = target
+      /* Only seek once we're a full frame (24fps) off — each seek costs a decode burst. */
+      if (Math.abs(video.currentTime - target) > 1 / 24) video.currentTime = target
     })
   })
 
@@ -66,6 +82,10 @@ export function EnvelopeTransition() {
     },
     [],
   )
+
+  // The cinematic envelope is intentionally a desktop-only moment. Returning
+  // before the media markup is created keeps phones from downloading it.
+  if (mobile) return null
 
   if (reduce) {
     return (
@@ -88,8 +108,8 @@ export function EnvelopeTransition() {
       <div className="sticky top-0 h-[100dvh] overflow-hidden bg-ink-950">
         <video
           ref={videoRef}
-          poster={mobile ? MOBILE_POSTER_SRC : POSTER_SRC}
-          preload="auto"
+          poster={POSTER_SRC}
+          preload="none"
           muted
           playsInline
           aria-hidden="true"
@@ -103,7 +123,6 @@ export function EnvelopeTransition() {
           }}
           className="h-full w-full object-cover object-center"
         >
-          <source src={MOBILE_VIDEO_SRC} media="(max-width: 639px)" type="video/mp4" />
           <source src={VIDEO_SRC} type="video/mp4" />
         </video>
 

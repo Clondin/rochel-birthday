@@ -313,57 +313,54 @@ upper_page.parent = upper_hinge
 # Cover typography visible while the card emerges.
 cover_for = text_obj("Letter cover small line", "FOR", (0, 0.48, 0.115), 0.18, GOLD, extrude=0.002, font=GEORGIA)
 cover_name = text_obj("Letter cover Rochel", "ROCHEL", (0, 0.04, 0.118), 0.52, CORAL_INK, extrude=0.0025, font=GEORGIA)
-cover_date = text_obj("Letter cover date", "JULY 02", (0, -0.65, 0.116), 0.15, INK, extrude=0.0015, font=GEORGIA)
+cover_date = text_obj("Letter cover date", "AUGUST 04", (0, -0.65, 0.116), 0.15, INK, extrude=0.0015, font=GEORGIA)
 cover_star = text_obj("Letter cover star", "*", (0, 0.76, 0.119), 0.30, GOLD, extrude=0.002, font=GEORGIA)
 for obj in (cover_for, cover_name, cover_date, cover_star):
     obj.location.y -= 1.54
     obj.parent = upper_hinge
 
-# Inner message is restrained letterpress, with handwriting reserved for the
-# intimate opening and signature rather than shouting in all-caps geometry.
-kicker = text_obj("Inner letter kicker", "A NOTE FOR MY FAVORITE PERSON", (-2.15, 1.08, 0.122), 0.105, GOLD, "LEFT", 0.001, GEORGIA)
-letter_date = text_obj("Inner letter date", "JULY 02", (2.15, 1.08, 0.122), 0.105, GOLD, "RIGHT", 0.001, GEORGIA)
-salutation = text_obj("Inner letter salutation", "Rochel,", (-2.15, 0.67, 0.124), 0.39, CORAL_INK, "LEFT", 0.0015, CHANCERY)
-line1 = text_obj("Inner message line one", "Another year with you.", (-2.15, 0.12, 0.123), 0.225, INK, "LEFT", 0.001, GEORGIA_ITALIC)
-line2 = text_obj("Inner message line two", "Still the best thing I ever", (-2.15, -0.27, 0.123), 0.225, INK, "LEFT", 0.001, GEORGIA_ITALIC)
-line3 = text_obj("Inner message line three", "talked my way into.", (-2.15, -0.66, 0.123), 0.225, INK, "LEFT", 0.001, GEORGIA_ITALIC)
-always = text_obj("Inner signature preface", "always,", (1.02, -0.29, 0.124), 0.20, INK, extrude=0.001, font=GEORGIA_ITALIC)
-signature = text_obj("Inner letter signature", "Cheskie", (1.02, -0.60, 0.125), 0.39, CORAL_INK, extrude=0.0015, font=CHANCERY)
+# The approved note is typeset across both halves of the unfolded card. The
+# upper half is viewed from its reverse after the fold opens, so its text is
+# rotated onto that paper face. Copy here mirrors src/content.ts exactly.
+upper_copy = (
+    ("Inner salutation", "Dear Rochel,", -2.35, 0.31, CORAL_INK, CHANCERY),
+    ("Inner opening line one", "Happy birthday. It’s crazy that we’ve", -1.86, 0.15, INK, GEORGIA),
+    ("Inner opening line two", "gone from essentially being kids when", -1.46, 0.15, INK, GEORGIA),
+    ("Inner opening line three", "we got married to now having two of", -1.06, 0.15, INK, GEORGIA),
+    ("Inner opening line four", "our own.", -0.66, 0.15, INK, GEORGIA),
+)
+upper_letter_objects = []
+for name, copy, y, size, material, font in upper_copy:
+    obj = text_obj(name, copy, (-2.20, y, -0.155), size, material, "LEFT", 0.001, font)
+    obj.rotation_euler[0] = math.pi
+    obj.parent = upper_hinge
+    key(obj, 1, scale=(0.001,0.001,0.001)); key(obj, 148, scale=(0.001,0.001,0.001)); key(obj, 160, scale=(1,1,1)); key(obj, 192, scale=(1,1,1))
+    upper_letter_objects.append(obj)
 
-gold_rule = curve("Fine gold letterpress rule", [(-2.15,0.48,0.122),(-1.12,0.48,0.122)], GOLD, 0.009)
-signature_rule = curve("Signature finishing stroke", [(0.42,-0.82,0.122),(1.65,-0.82,0.122)], CORAL_INK, 0.007)
-inner_letter_objects = (kicker, letter_date, salutation, line1, line2, line3, always, signature, gold_rule, signature_rule)
-for obj in inner_letter_objects:
+lower_copy = (
+    ("Inner body line one", "You are such an amazing human, wife,", 1.13),
+    ("Inner body line two", "and mother to our kids. I have a tremendous", 0.85),
+    ("Inner body line three", "amount of admiration and respect for", 0.57),
+    ("Inner body line four", "everything you manage to juggle in your life.", 0.29),
+    ("Inner birthday line one", "Mazel tov on turning 25. I look forward to", -0.08),
+    ("Inner birthday line two", "spending many more birthdays together.", -0.36),
+)
+lower_letter_objects = []
+for name, copy, y in lower_copy:
+    obj = text_obj(name, copy, (-2.20, y, 0.123), 0.145, INK, "LEFT", 0.001, GEORGIA)
     obj.parent = letter_root
+    lower_letter_objects.append(obj)
+
+love = text_obj("Inner closing", "Love,", (-2.20, -0.73, 0.124), 0.16, INK, "LEFT", 0.001, GEORGIA)
+signature = text_obj("Inner letter signature", "Cheskie", (-1.76, -1.02, 0.125), 0.34, CORAL_INK, "LEFT", 0.0015, CHANCERY)
+postscript = text_obj("Inner postscript", "P.S. This letter was written by me, not the AI lol.", (-2.20, -1.33, 0.124), 0.105, INK, "LEFT", 0.001, GEORGIA_ITALIC)
+gold_rule = curve("Fine gold letterpress rule", [(-2.20,-0.56,0.122),(-1.18,-0.56,0.122)], GOLD, 0.007)
+signature_rule = curve("Signature finishing stroke", [(-1.86,-1.16,0.122),(-0.58,-1.16,0.122)], CORAL_INK, 0.006)
+lower_letter_objects.extend((love, signature, postscript, gold_rule, signature_rule))
+for obj in lower_letter_objects:
+    if obj.parent is None:
+        obj.parent = letter_root
     key(obj, 1, scale=(0.001,0.001,0.001)); key(obj, 156, scale=(0.001,0.001,0.001)); key(obj, 166, scale=(1,1,1)); key(obj, 192, scale=(1,1,1))
-
-# Tiny photo mounted on the unfolded upper page; it travels with the hinge.
-inner_card = cube("Inner memory photo border", (0, -1.48, -0.13), (1.38, 1.08, 0.026), PHOTO_WHITE, 0.035)
-inner_card.parent = upper_hinge
-bpy.ops.mesh.primitive_plane_add(size=2, location=(0, -1.48, -0.159))
-inner_photo = bpy.context.object
-inner_photo.name = "Inner wedding memory photograph"
-inner_photo.scale = (1.25, 0.93, 1)
-inner_photo.rotation_euler[0] = math.pi
-inner_photo.data.materials.append(image_material("Inner wedding image", os.path.join(ROOT, "public", "photos", "optimized", "p11-letter.webp")))
-inner_photo.parent = upper_hinge
-key(inner_card, 1, scale=(0.001,0.001,0.001)); key(inner_card, 148, scale=(0.001,0.001,0.001)); key(inner_card, 160, scale=(1,1,1)); key(inner_card, 192, scale=(1,1,1))
-key(inner_photo, 1, scale=(0.001,0.001,0.001)); key(inner_photo, 148, scale=(0.001,0.001,0.001)); key(inner_photo, 160, scale=(1.25,0.93,1)); key(inner_photo, 192, scale=(1.25,0.93,1))
-
-# Four small gold photo corners make the memory feel mounted by hand.
-photo_corners = []
-for i, (x, y, angle) in enumerate(((-1.23,-0.56,-45),(1.23,-0.56,45),(-1.23,-2.40,45),(1.23,-2.40,-45))):
-    corner = cube(f"Gold photo corner {i+1}", (x,y,-0.19), (0.14,0.14,0.012), GOLD, 0.018)
-    corner.rotation_euler[0] = math.pi
-    corner.rotation_euler[2] = math.radians(angle)
-    corner.parent = upper_hinge
-    key(corner, 1, scale=(0.001,0.001,0.001)); key(corner, 148, scale=(0.001,0.001,0.001)); key(corner, 160, scale=(1,1,1)); key(corner, 192, scale=(1,1,1))
-    photo_corners.append(corner)
-
-photo_caption = text_obj("Inner photo caption", "one of my favorite days", (0,-0.30,-0.185), 0.14, INK, extrude=0.001, font=GEORGIA_ITALIC)
-photo_caption.rotation_euler[0] = math.pi
-photo_caption.parent = upper_hinge
-key(photo_caption, 1, scale=(0.001,0.001,0.001)); key(photo_caption, 148, scale=(0.001,0.001,0.001)); key(photo_caption, 160, scale=(1,1,1)); key(photo_caption, 192, scale=(1,1,1))
 
 # The folded card remains tucked away, rises out, then unfolds toward the top.
 key(letter_root, 1, location=(0,0.36,0.43), rotation_euler=(0,0,0), scale=(1,1,1))
@@ -462,9 +459,9 @@ camera_keys = [
     (102,(0.12,-8.52,7.24), 62, (0,0.20,0.68)),
     (126,(-0.22,-8.10,7.08), 65, (0,-0.55,1.05)),
     (150,(0.10,-8.02,7.05), 58, (0,-2.02,1.46)),
-    (170,(0.00,-7.32,7.18), 58 if MOBILE_MODE else 45, (0,-0.15,1.72)),
-    (184,(0.00,-5.80,6.42), 64 if MOBILE_MODE else 56, (0,-0.25,1.90)),
-    (192,(0.00,-4.60,5.40), 72, (0,-0.45,2.02)),
+    (170,(0.00,-9.00,8.50), 62 if MOBILE_MODE else 38, (0,-0.18,1.70)),
+    (184,(0.00,-9.20,8.70), 62 if MOBILE_MODE else 38, (0,-0.18,1.70)),
+    (192,(0.00,-9.20,8.70), 62 if MOBILE_MODE else 38, (0,-0.18,1.70)),
 ]
 for frame, loc, lens, target in camera_keys:
     camera.location = loc
@@ -497,7 +494,7 @@ if "--preview-mobile" in sys.argv:
     scene.render.resolution_y = 1280
     scene.render.resolution_percentage = 60
     camera.data.sensor_fit = "HORIZONTAL"
-    for frame in (112, 170):
+    for frame in (112, 170, 188):
         scene.frame_set(frame)
         scene.render.filepath = os.path.join(PREVIEW, f"mobile-preview-{frame:03d}.png")
         bpy.ops.render.render(write_still=True)
@@ -516,7 +513,7 @@ if "--render-mobile" in sys.argv:
     bpy.ops.render.render(animation=True)
 
 if "--render-letter-desktop" in sys.argv:
-    for frame in range(166, 193):
+    for frame in range(96, 193):
         scene.frame_set(frame)
         scene.render.filepath = os.path.join(OUT, f"frame-{frame:04d}.png")
         bpy.ops.render.render(write_still=True)
@@ -525,7 +522,7 @@ if "--render-letter-mobile" in sys.argv:
     scene.render.resolution_x = 720
     scene.render.resolution_y = 1280
     camera.data.sensor_fit = "HORIZONTAL"
-    for frame in range(166, 193):
+    for frame in range(96, 193):
         scene.frame_set(frame)
         scene.render.filepath = os.path.join(MOBILE_OUT, f"frame-{frame:04d}.png")
         bpy.ops.render.render(write_still=True)

@@ -9,9 +9,12 @@ import {
 import { CaretLeft, CaretRight, X } from '@phosphor-icons/react'
 import { archive } from '../content'
 import { FadeImg } from './fade-img'
-import { LineReveal } from './line-reveal'
 
 const EASE = [0.16, 1, 0.3, 1] as const
+
+/* Cards render ≤380px wide — use the 800px variant and keep the
+   full-size image for the lightbox only. */
+const card = (src: string) => src.replace('/web/', '/card/')
 
 /**
  * 3D fling gallery: drag / flick through a coverflow stack.
@@ -86,7 +89,7 @@ export function Gallery() {
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase">{archive.label}</p>
           <h2 className="font-display mt-6 text-6xl leading-[1.05] font-light tracking-tight md:text-8xl">
-            <LineReveal>{archive.headline}</LineReveal>
+            {archive.headline}
           </h2>
         </div>
 
@@ -120,7 +123,7 @@ export function Gallery() {
               /* wrap for endless-feeling deck edges */
               if (offset > n / 2) offset -= n
               if (offset < -n / 2) offset += n
-              if (Math.abs(offset) > 4) return null
+              if (Math.abs(offset) > 3) return null
 
               const abs = Math.abs(offset)
               const x = offset * (abs === 0 ? 0 : 150 + abs * 18)
@@ -139,10 +142,15 @@ export function Gallery() {
                     rotateY,
                     scale,
                     opacity,
-                    filter: `blur(${blur}px)`,
                   }}
                   transition={{ type: 'spring', stiffness: 180, damping: 24, mass: 0.7 }}
-                  style={{ transformStyle: 'preserve-3d' }}
+                  /* blur is set statically (CSS transition, not spring-animated):
+                     continuously interpolating a filter repaints every card every frame */
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    filter: blur ? `blur(${blur}px)` : 'none',
+                    transition: 'filter 0.35s ease',
+                  }}
                   className="absolute top-1/2 left-1/2 w-[min(72vw,380px)] -translate-x-1/2 -translate-y-1/2"
                 >
                   <button
@@ -156,7 +164,7 @@ export function Gallery() {
                     className="block w-full overflow-hidden rounded-[1.75rem] bg-ink-900 shadow-[0_30px_80px_rgb(33_27_26/0.22)] ring-1 ring-ivory-50/10"
                   >
                     <FadeImg
-                      src={item}
+                      src={card(item)}
                       alt={`Family photograph ${i + 1}`}
                       loading={abs < 2 ? 'eager' : 'lazy'}
                       className="aspect-[3/4] h-auto w-full object-cover"
@@ -200,7 +208,7 @@ export function Gallery() {
           <div className="w-[80vw] shrink-0 snap-center">
             <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase">{archive.label}</p>
             <h2 className="font-display mt-6 text-6xl leading-[1.05] font-light tracking-tight">
-              <LineReveal>{archive.headline}</LineReveal>
+              {archive.headline}
             </h2>
           </div>
 
@@ -214,10 +222,10 @@ export function Gallery() {
                 }`}
               >
                 <FadeImg
-                  src={item}
+                  src={card(item)}
                   alt={`Family photograph ${i + 1}`}
                   loading="lazy"
-                  className="h-full w-auto object-cover"
+                  className="aspect-[3/4] h-full w-auto object-cover"
                 />
               </button>
             </figure>

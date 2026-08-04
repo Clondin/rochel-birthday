@@ -26,7 +26,7 @@ export function FireworksOverlay() {
         ref={video}
         muted
         playsInline
-        preload="auto"
+        preload="none"
         onEnded={() => setActive(false)}
         className="h-full w-full object-cover [filter:drop-shadow(0_0_4px_rgba(255,181,89,0.7))_drop-shadow(0_0_12px_rgba(239,75,47,0.22))]"
       >

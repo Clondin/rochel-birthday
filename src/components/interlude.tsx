@@ -1,18 +1,62 @@
+import { useRef, useState } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
-import { useRef } from 'react'
+import { ArrowClockwise, Play } from '@phosphor-icons/react'
 import { interlude } from '../content'
 import { FadeImg } from './fade-img'
 
-/* A silent full-screen photograph gives the page room to breathe. */
+/**
+ * The quiet photograph between the galleries. When it scrolls into view,
+ * a video message pops out big over it and plays with sound. Browsers only
+ * allow unmuted autoplay after the page has been interacted with — if the
+ * attempt is blocked, a play button appears so the sound starts on tap.
+ */
 export function Interlude() {
   const ref = useRef<HTMLElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const reduce = useReducedMotion()
+  const [popped, setPopped] = useState(false)
+  const [needsTap, setNeedsTap] = useState(false)
+  const [ended, setEnded] = useState(false)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const scale = useTransform(scrollYProgress, [0, 1], [1.18, 1])
 
+  const tryPlay = () => {
+    const video = videoRef.current
+    if (!video) return
+    setEnded(false)
+    video.currentTime = 0
+    video.muted = false
+    video
+      .play()
+      .then(() => setNeedsTap(false))
+      .catch(() => setNeedsTap(true))
+  }
+
+  /* Reduced motion: photo with the video sitting quietly on top, native controls. */
+  if (reduce) {
+    return (
+      <section aria-label={interlude.alt} className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden">
+        <img src={interlude.src} alt={interlude.alt} className="absolute inset-0 h-full w-full object-cover" />
+        <div aria-hidden className="absolute inset-0 bg-ivory-50/40" />
+        <figure className="relative z-10 text-center">
+          <video
+            src={interlude.video.src}
+            controls
+            playsInline
+            preload="metadata"
+            className="h-[60vh] rounded-2xl shadow-[0_40px_100px_rgb(33_27_26/0.5)]"
+          />
+          <figcaption className="mt-4 text-[11px] font-semibold tracking-[0.4em] text-ink-950 uppercase">
+            {interlude.video.label}
+          </figcaption>
+        </figure>
+      </section>
+    )
+  }
+
   return (
-    <section ref={ref} aria-label={interlude.alt} className="relative min-h-[100dvh] overflow-hidden">
-      <motion.div style={reduce ? undefined : { scale }} className="absolute inset-0">
+    <section ref={ref} aria-label={interlude.alt} className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden">
+      <motion.div style={{ scale }} className="absolute inset-0">
         <FadeImg
           src={interlude.src}
           alt={interlude.alt}
@@ -25,6 +69,67 @@ export function Interlude() {
         aria-hidden
         className="absolute inset-0 bg-gradient-to-b from-ink-950/12 via-transparent to-ink-950/32"
       />
+
+      {/* dark veil behind the popped video so the message owns the moment */}
+      <motion.div
+        aria-hidden
+        animate={{ opacity: popped ? 0.5 : 0 }}
+        transition={{ duration: 0.5 }}
+        className="pointer-events-none absolute inset-0 bg-ivory-50"
+      />
+
+      {/* the pop-out trigger: fires when the section is halfway into view */}
+      <motion.div
+        onViewportEnter={() => {
+          setPopped(true)
+          tryPlay()
+        }}
+        onViewportLeave={() => {
+          setPopped(false)
+          videoRef.current?.pause()
+        }}
+        viewport={{ amount: 0.5 }}
+        className="absolute inset-0"
+        aria-hidden
+      />
+
+      <motion.figure
+        initial={false}
+        animate={
+          popped
+            ? { scale: 1, opacity: 1, rotate: 0, y: 0 }
+            : { scale: 0.55, opacity: 0, rotate: -5, y: 40 }
+        }
+        transition={{ type: 'spring', stiffness: 120, damping: 17 }}
+        className={`relative z-10 text-center ${popped ? '' : 'pointer-events-none'}`}
+      >
+        <div className="relative overflow-hidden rounded-[1.5rem] border-[5px] border-ink-950 bg-ivory-50 shadow-[0_50px_130px_rgb(33_27_26/0.55)]">
+          <video
+            ref={videoRef}
+            src={interlude.video.src}
+            playsInline
+            preload="metadata"
+            onEnded={() => setEnded(true)}
+            className="aspect-[9/16] h-[min(62vh,34rem)] object-cover md:h-[min(70vh,40rem)]"
+          />
+
+          {/* blocked-autoplay / replay overlay */}
+          {(needsTap || ended) && (
+            <button
+              onClick={tryPlay}
+              aria-label={needsTap ? 'Play the message with sound' : 'Play it again'}
+              className="absolute inset-0 grid place-items-center bg-ivory-50/35 transition-colors hover:bg-ivory-50/25"
+            >
+              <span className="grid h-20 w-20 place-items-center rounded-full bg-wine-400 text-ink-950 shadow-[0_16px_50px_rgb(239_75_47/0.45)] transition-transform hover:scale-105 active:scale-95">
+                {needsTap ? <Play size={32} weight="fill" /> : <ArrowClockwise size={32} weight="bold" />}
+              </span>
+            </button>
+          )}
+        </div>
+        <figcaption className="mt-5 text-[11px] font-semibold tracking-[0.4em] text-ink-950 uppercase drop-shadow-[0_1px_8px_rgb(33_27_26/0.6)]">
+          {interlude.video.label}
+        </figcaption>
+      </motion.figure>
     </section>
   )
 }

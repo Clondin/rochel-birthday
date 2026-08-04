@@ -96,10 +96,6 @@ html {
     'WONK' 1;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 /* Slow drift on the hero portrait */
 @keyframes ken-burns {
   from {
@@ -184,6 +180,10 @@ html {
 
 .marquee-reverse {
   animation-direction: reverse;
+}
+
+.marquee-paused {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {

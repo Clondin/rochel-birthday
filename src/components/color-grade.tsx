@@ -4,7 +4,8 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 /**
  * Full-page cinematic color grade that shifts as you scroll.
  * Warm gold early → rose mid → deep wine at the end.
- * Overlay only; never blocks interaction.
+ * Plain alpha washes only — no mix-blend-mode, so the compositor can keep
+ * these as cached layers instead of re-blending the viewport every frame.
  */
 export function ColorGrade() {
   const reduce = useReducedMotion()
@@ -27,15 +28,15 @@ export function ColorGrade() {
     <div aria-hidden className="pointer-events-none fixed inset-0 z-[40]">
       <motion.div
         style={{ opacity: gold }}
-        className="absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_20%,rgb(255_182_41/0.35),transparent_70%)] mix-blend-soft-light"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_20%,rgb(255_182_41/0.18),transparent_70%)]"
       />
       <motion.div
         style={{ opacity: rose }}
-        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_70%_40%,rgb(239_75_47/0.28),transparent_65%)] mix-blend-soft-light"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_70%_40%,rgb(239_75_47/0.14),transparent_65%)]"
       />
       <motion.div
         style={{ opacity: wine }}
-        className="absolute inset-0 bg-[radial-gradient(ellipse_100%_80%_at_50%_90%,rgb(201_54_32/0.4),transparent_60%)] mix-blend-multiply"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_100%_80%_at_50%_90%,rgb(120_28_16/0.3),transparent_60%)]"
       />
       <motion.div
         style={{ opacity: vignette }}

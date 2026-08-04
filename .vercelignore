@@ -5,3 +5,6 @@ dist/
 # Keep Blender source in GitHub, but do not upload production-irrelevant
 # scene files, scripts, or raw render caches to Vercel.
 blender/
+
+# Source masters, not served
+photos-originals/

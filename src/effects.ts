@@ -42,9 +42,11 @@ export function chime() {
   }
 }
 
-/* The full volley: chime, big center burst, side cannons, streamers. */
-export function celebrate() {
-  chime()
+/* The full volley: chime, big center burst, side cannons, streamers.
+   Pass silent when not triggered by a user gesture — the browser blocks
+   audio there, so skip the chime instead of logging autoplay warnings. */
+export function celebrate({ silent = false } = {}) {
+  if (!silent) chime()
   window.dispatchEvent(new Event('birthday-fireworks'))
   confetti({ ...defaults, particleCount: 150, spread: 100, origin: { y: 0.7 } })
   if (starShapes.length) {

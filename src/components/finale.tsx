@@ -10,7 +10,6 @@ import { finale, her } from '../content'
 import { celebrate, spark } from '../effects'
 import { Dust } from './dust'
 import { FadeImg } from './fade-img'
-import { LineReveal } from './line-reveal'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -159,7 +158,7 @@ export function Finale() {
             className="relative flex flex-col items-center"
           >
             <h2 className="max-w-5xl text-5xl font-black uppercase leading-[0.9] tracking-[-0.055em] text-ivory-50 drop-shadow-[0_2px_16px_rgb(247_241_232/0.9)] sm:text-6xl md:text-8xl">
-              <LineReveal>{finale.lead}</LineReveal>
+              {finale.lead}
             </h2>
             <motion.div
               initial={reduce ? false : { opacity: 0, y: 20 }}
@@ -216,7 +215,7 @@ export function Finale() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.85 }}
               data-cursor="press"
-              onClick={celebrate}
+              onClick={() => celebrate()}
               className="mt-10 rounded-full border border-ivory-50/20 px-8 py-3 text-sm font-medium tracking-[0.2em] text-ivory-300 uppercase transition-all duration-200 hover:border-wine-400/60 hover:text-ivory-50 active:scale-[0.98]"
             >
               More fireworks

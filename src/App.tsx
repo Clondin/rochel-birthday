@@ -27,7 +27,7 @@ export default function App() {
     const now = new Date()
     const isToday = now.getMonth() + 1 === m && now.getDate() === d
     if (!isToday || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const t = setTimeout(celebrate, 3800)
+    const t = setTimeout(() => celebrate({ silent: true }), 3800)
     return () => clearTimeout(t)
   }, [])
 
@@ -41,7 +41,7 @@ export default function App() {
 
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-50 opacity-[0.04] mix-blend-overlay"
+        className="pointer-events-none fixed inset-0 z-50 opacity-[0.03]"
         style={{ backgroundImage: `url('${GRAIN}')` }}
       />
       <Hero />

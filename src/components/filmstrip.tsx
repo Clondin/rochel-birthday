@@ -1,11 +1,13 @@
+import { useEffect, useRef, useState } from 'react'
 import { FadeImg } from './fade-img'
 
-/* Every photo in the pool, p01..p120. */
-const ALL = Array.from({ length: 120 }, (_, i) => `/photos/web/p${String(i + 1).padStart(2, '0')}.webp`)
+/* Every photo in the pool, p01..p120 — the 420px thumbs, not the full-size
+   images: these render ~200px wide, and full-size decodes are what lag. */
+const ALL = Array.from({ length: 120 }, (_, i) => `/photos/thumbs/p${String(i + 1).padStart(2, '0')}.webp`)
 const ROW_A = ALL.slice(0, 60)
 const ROW_B = ALL.slice(60)
 
-function Row({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
+function Row({ items, paused, reverse = false }: { items: string[]; paused: boolean; reverse?: boolean }) {
   /* Content duplicated once; the track slides exactly one copy's width. */
   const copy = (key: string) => (
     <div key={key} aria-hidden={key === 'b'} className="flex shrink-0 gap-3 pr-3">
@@ -26,7 +28,7 @@ function Row({ items, reverse = false }: { items: string[]; reverse?: boolean })
   return (
     <div className="flex overflow-hidden">
       <div
-        className={`marquee-track flex w-max ${reverse ? 'marquee-reverse' : ''}`}
+        className={`marquee-track flex w-max ${reverse ? 'marquee-reverse' : ''} ${paused ? 'marquee-paused' : ''}`}
         style={{ ['--marquee-duration' as string]: '160s' }}
       >
         {copy('a')}
@@ -36,15 +38,29 @@ function Row({ items, reverse = false }: { items: string[]; reverse?: boolean })
   )
 }
 
-/* The full reel, drifting by. */
+/* The full reel, drifting by. The marquee only animates while the section
+   is near the viewport; offscreen it pauses so it costs nothing. */
 export function Filmstrip() {
+  const ref = useRef<HTMLElement>(null)
+  const [paused, setPaused] = useState(true)
+
+  useEffect(() => {
+    if (!ref.current) return
+    const observer = new IntersectionObserver(
+      (entries) => setPaused(!entries.some((entry) => entry.isIntersecting)),
+      { rootMargin: '200px 0px' },
+    )
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section className="space-y-3 py-24 md:py-36">
+    <section ref={ref} className="space-y-3 py-24 md:py-36">
       <p className="mx-auto max-w-7xl px-6 pb-8 text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase md:px-10">
         The rest of the photos.
       </p>
-      <Row items={ROW_A} />
-      <Row items={ROW_B} reverse />
+      <Row items={ROW_A} paused={paused} />
+      <Row items={ROW_B} paused={paused} reverse />
     </section>
   )
 }

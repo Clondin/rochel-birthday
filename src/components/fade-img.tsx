@@ -10,6 +10,7 @@ export function FadeImg({ className = '', loadedClass = 'opacity-100', ...props 
   const [loaded, setLoaded] = useState(false)
   return (
     <img
+      decoding="async"
       {...props}
       ref={(el) => {
         if (el && el.complete && el.naturalWidth > 0 && !loaded) setLoaded(true)

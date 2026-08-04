@@ -9,7 +9,6 @@ import {
 } from 'motion/react'
 import { her, letter } from '../content'
 import { FadeImg } from './fade-img'
-import { LineReveal } from './line-reveal'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -86,7 +85,7 @@ export function Letter() {
       <div className="md:sticky md:top-28 md:self-start">
         <p className="text-[11px] font-semibold tracking-[0.4em] text-wine-600 uppercase">{letter.label}</p>
         <h2 className="font-display mt-6 text-5xl leading-[1.1] font-light tracking-tight text-ivory-50 italic md:text-7xl">
-          <LineReveal>{letter.headline}</LineReveal>
+          {letter.headline}
         </h2>
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 24, rotate: 0 }}
@@ -145,14 +144,24 @@ export function Letter() {
             {letter.paragraphs.map((p, i) => (
               <LitParagraph key={i} text={p} />
             ))}
-            <motion.p
+            <motion.div
               initial={reduce ? false : { opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.8, ease: EASE }}
-              className="pb-1 font-[family-name:var(--font-hand)] text-4xl text-wine-400 md:text-5xl"
+              className="space-y-1"
             >
-              {her.from}
+              <p className="font-display text-xl font-light text-ivory-50 md:text-2xl">{letter.closing}</p>
+              <p className="pb-1 font-[family-name:var(--font-hand)] text-4xl text-wine-400 md:text-5xl">{her.from}</p>
+            </motion.div>
+            <motion.p
+              initial={reduce ? false : { opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
+              className="font-display text-base leading-relaxed font-light text-ivory-50/75 italic md:text-lg"
+            >
+              {letter.postscript}
             </motion.p>
           </div>
         </motion.div>

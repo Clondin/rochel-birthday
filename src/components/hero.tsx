@@ -8,7 +8,7 @@ import {
   useSpring,
   useTransform,
 } from 'motion/react'
-import { her, hero } from '../content'
+import { birthdayLabel, her, hero } from '../content'
 import { celebrate } from '../effects'
 import { FadeImg } from './fade-img'
 
@@ -90,7 +90,7 @@ export function Hero() {
         className="absolute left-5 right-5 top-5 z-20 flex items-center justify-between border-b border-ivory-50/15 pb-4 text-[10px] font-semibold uppercase tracking-[0.26em] sm:left-8 sm:right-8 md:left-10 md:right-10"
       >
         <span>For {her.name}</span>
-        <span className="text-wine-400">July 02</span>
+        <span className="text-wine-400">{birthdayLabel.month} {birthdayLabel.day}</span>
         <span>From {her.from}</span>
       </motion.header>
 
@@ -153,7 +153,7 @@ export function Hero() {
         initial={reduce ? false : { opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: T0 + 1.05, ease: EASE }}
-        onClick={celebrate}
+        onClick={() => celebrate()}
         className="absolute bottom-6 z-20 inline-flex items-center gap-2 rounded-full bg-wine-400 px-6 py-3.5 text-sm font-bold text-ivory-50 shadow-[0_14px_40px_rgb(239_75_47/0.2)] transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
       >
         <Confetti size={18} weight="bold" />

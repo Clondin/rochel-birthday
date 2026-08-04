@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
-import { ArrowClockwise, Play } from '@phosphor-icons/react'
+import { ArrowClockwise, SpeakerHigh } from '@phosphor-icons/react'
 import { interlude } from '../content'
 import { FadeImg } from './fade-img'
 
@@ -20,6 +20,9 @@ export function Interlude() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const scale = useTransform(scrollYProgress, [0, 1], [1.18, 1])
 
+  /* Always autoplay: try with sound first; if the browser blocks unmuted
+     autoplay (no interaction yet), play muted and offer an unmute button
+     that restarts the message from the top with sound. */
   const tryPlay = () => {
     const video = videoRef.current
     if (!video) return
@@ -29,7 +32,11 @@ export function Interlude() {
     video
       .play()
       .then(() => setNeedsTap(false))
-      .catch(() => setNeedsTap(true))
+      .catch(() => {
+        video.muted = true
+        void video.play().catch(() => {})
+        setNeedsTap(true)
+      })
   }
 
   /* Reduced motion: photo with the video sitting quietly on top, native controls. */
@@ -108,20 +115,32 @@ export function Interlude() {
             ref={videoRef}
             src={interlude.video.src}
             playsInline
-            preload="metadata"
+            preload="auto"
             onEnded={() => setEnded(true)}
             className="aspect-[9/16] h-[min(62vh,34rem)] object-cover md:h-[min(70vh,40rem)]"
           />
 
-          {/* blocked-autoplay / replay overlay */}
+          {/* muted-autoplay unmute / replay overlay */}
           {(needsTap || ended) && (
             <button
               onClick={tryPlay}
-              aria-label={needsTap ? 'Play the message with sound' : 'Play it again'}
-              className="absolute inset-0 grid place-items-center bg-ivory-50/35 transition-colors hover:bg-ivory-50/25"
+              aria-label={needsTap ? 'Turn the sound on' : 'Play it again'}
+              className={`absolute inset-0 grid transition-colors ${
+                needsTap ? 'items-end justify-center pb-6' : 'place-items-center bg-ivory-50/35 hover:bg-ivory-50/25'
+              }`}
             >
-              <span className="grid h-20 w-20 place-items-center rounded-full bg-wine-400 text-ink-950 shadow-[0_16px_50px_rgb(239_75_47/0.45)] transition-transform hover:scale-105 active:scale-95">
-                {needsTap ? <Play size={32} weight="fill" /> : <ArrowClockwise size={32} weight="bold" />}
+              <span
+                className={`grid place-items-center rounded-full bg-wine-400 text-ink-950 shadow-[0_16px_50px_rgb(239_75_47/0.45)] transition-transform hover:scale-105 active:scale-95 ${
+                  needsTap ? 'h-14 gap-2 px-6 text-sm font-semibold tracking-wide grid-flow-col' : 'h-20 w-20'
+                }`}
+              >
+                {needsTap ? (
+                  <>
+                    <SpeakerHigh size={22} weight="fill" /> Sound on
+                  </>
+                ) : (
+                  <ArrowClockwise size={32} weight="bold" />
+                )}
               </span>
             </button>
           )}

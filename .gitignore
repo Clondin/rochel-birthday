@@ -33,3 +33,6 @@ blender/review*/
 blender/*-renders/
 blender/*-preview/
 *.blend1
+
+# Local Claude Code settings
+.claude/settings.local.json

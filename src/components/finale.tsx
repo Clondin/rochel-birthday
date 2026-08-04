@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
+  animate,
   AnimatePresence,
   motion,
   useMotionValue,
   useReducedMotion,
   useSpring,
+  useTransform,
 } from 'motion/react'
 import { finale, her } from '../content'
 import { celebrate, spark } from '../effects'
@@ -91,11 +93,62 @@ function ExplodingName({ name, fillSrc, reduce }: { name: string; fillSrc: strin
   )
 }
 
+const HOLD_MS = 1200
+
 export function Finale() {
   const [wished, setWished] = useState(false)
   const reduce = useReducedMotion()
 
+  /* Press-and-hold to wish: the glow builds while she holds, and the
+     explosion fires when the hold completes. Released early, it breathes
+     back down. Reduced motion grants the wish on a plain press. */
+  const holdProgress = useMotionValue(0)
+  const glowOpacity = useTransform(holdProgress, [0, 1], [0.3, 1])
+  const glowScale = useTransform(holdProgress, [0, 1], [1, 2.1])
+  const buttonScale = useTransform(holdProgress, [0, 1], [1, 1.08])
+  const holdFrame = useRef<number | null>(null)
+
+  const stopHold = () => {
+    if (holdFrame.current !== null) cancelAnimationFrame(holdFrame.current)
+    holdFrame.current = null
+  }
+
+  const grantWish = () => {
+    stopHold()
+    setWished(true)
+    celebrate()
+  }
+
+  const startHold = () => {
+    if (reduce) {
+      grantWish()
+      return
+    }
+    if (holdFrame.current !== null || wished) return
+    const startAt = performance.now() - holdProgress.get() * HOLD_MS
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - startAt) / HOLD_MS)
+      holdProgress.set(progress)
+      if (progress >= 1) {
+        holdFrame.current = null
+        grantWish()
+        return
+      }
+      holdFrame.current = requestAnimationFrame(tick)
+    }
+    holdFrame.current = requestAnimationFrame(tick)
+  }
+
+  const cancelHold = () => {
+    if (holdFrame.current === null) return
+    stopHold()
+    animate(holdProgress, 0, { duration: 0.4, ease: 'easeOut' })
+  }
+
+  useEffect(() => stopHold, [])
+
   return (
+    <>
     <section
       onPointerDown={(e) => {
         if (wished && !reduce) spark(e.clientX, e.clientY)
@@ -168,19 +221,49 @@ export function Finale() {
             >
               <Magnetic>
                 <div className="relative mt-14 inline-block">
-                  <span aria-hidden className="glow-pulse absolute -inset-2 rounded-full bg-wine-400/25 blur-xl" />
-                  <button
+                  <motion.span
+                    aria-hidden
+                    style={reduce ? undefined : { opacity: glowOpacity, scale: glowScale }}
+                    className="absolute -inset-2 rounded-full bg-wine-400/40 blur-xl"
+                  />
+                  <motion.button
                     data-cursor="press"
-                    onClick={() => {
-                      setWished(true)
-                      celebrate()
+                    style={reduce ? undefined : { scale: buttonScale }}
+                    onPointerDown={(e) => {
+                      e.preventDefault()
+                      try {
+                        e.currentTarget.setPointerCapture(e.pointerId)
+                      } catch {
+                        /* capture is a nicety; the hold works without it */
+                      }
+                      startHold()
                     }}
-                    className="relative rounded-full bg-wine-400 px-12 py-5 text-lg font-medium tracking-wide text-ivory-50 transition-colors duration-200 hover:bg-wine-300 active:scale-[0.98]"
+                    onPointerUp={cancelHold}
+                    onPointerCancel={cancelHold}
+                    onKeyDown={(e) => {
+                      if ((e.key === 'Enter' || e.key === ' ') && !e.repeat) {
+                        e.preventDefault()
+                        startHold()
+                      }
+                    }}
+                    onKeyUp={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        cancelHold()
+                      }
+                    }}
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="relative touch-none rounded-full bg-wine-400 px-12 py-5 text-lg font-medium tracking-wide text-ivory-50 transition-colors duration-200 select-none hover:bg-wine-300"
                   >
                     {finale.buttonLabel}
-                  </button>
+                  </motion.button>
                 </div>
               </Magnetic>
+              {!reduce && (
+                <p className="mt-5 text-center text-[11px] font-semibold tracking-[0.3em] text-ivory-300 uppercase">
+                  {finale.buttonHint}
+                </p>
+              )}
             </motion.div>
           </motion.div>
         ) : (
@@ -224,5 +307,19 @@ export function Finale() {
         )}
       </AnimatePresence>
     </section>
+
+    {/* the quiet last line, fading in as she scrolls past the fireworks */}
+    <section className="flex min-h-[45vh] items-center justify-center px-6">
+      <motion.p
+        initial={reduce ? false : { opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.7 }}
+        transition={{ duration: 1, ease: EASE }}
+        className="font-display text-center text-3xl font-light tracking-tight text-ivory-50 italic md:text-4xl"
+      >
+        {finale.closingLine}
+      </motion.p>
+    </section>
+    </>
   )
 }

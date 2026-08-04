@@ -165,6 +165,9 @@ export const interlude = {
 export const finale = {
   lead: 'Close your eyes.',
   buttonLabel: 'Make a wish',
+  buttonHint: 'press and hold',
+  /* the quiet last line after the fireworks — edit freely */
+  closingLine: 'Same time next year.',
   headline: 'Happy birthday,',
   sub: 'I love you.',
   bgSrc: '/photos/web/p14.webp',

@@ -172,12 +172,15 @@ def image_material(name, path):
 
 
 def photo_print(name, image_path, location, size, rotation=0):
-    card = cube(name + " cotton border", location, (size[0] * 0.56, size[1] * 0.60, 0.035), PHOTO_WHITE, 0.035)
+    # Keep a thin physical substrate beneath the photograph, but make the
+    # image full-bleed so no ivory/Polaroid matte is visible in the render.
+    photo_scale = (size[0] * 0.50, size[1] * 0.49)
+    card = cube(name + " full-bleed backing", location, (*photo_scale, 0.035), PHOTO_WHITE, 0.015)
     card.rotation_euler[2] = rotation
-    bpy.ops.mesh.primitive_plane_add(size=2, location=(location[0], location[1] - size[1] * 0.035, location[2] + 0.038))
+    bpy.ops.mesh.primitive_plane_add(size=2, location=(location[0], location[1], location[2] + 0.038))
     image = bpy.context.object
     image.name = name + " photograph"
-    image.scale = (size[0] * 0.50, size[1] * 0.49, 1)
+    image.scale = (*photo_scale, 1)
     image.rotation_euler[2] = rotation
     image.data.materials.append(image_material(name + " image", image_path))
     return card, image
